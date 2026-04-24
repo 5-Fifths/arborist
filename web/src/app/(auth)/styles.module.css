@@ -1,4 +1,4 @@
-.login_form {
+.form {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -53,4 +53,8 @@
 
 .link:hover {
     color: #435E46;
+}
+
+.black {
+    color: var(--primary);
 }
