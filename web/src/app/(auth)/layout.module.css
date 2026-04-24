@@ -1,0 +1,61 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-be-vietnam-pro);
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    flex: 1;
+    height: 100vh;
+    background-image: linear-gradient(
+            to top, 
+            rgba(0, 0, 0, 0.6), 
+            transparent
+        ), 
+        url("https://media.desenio.com/site_images/685c6b0d9ba509224c9485bb_1045513574_16900-4.jpg");
+    background-color: var(--accent);
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.90);
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: var(--neutral);
+        font-family: var(--font-noto-serif);
+
+        .brand {
+            font-size: 100px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            font-family: var(--font-be-vietnam-pro);
+            font-size: 30px;
+            font-weight: 400;
+        }
+    }
+}
+
+.login_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    max-width: 400px;
+    min-width: 300px;
+    height: 100vh;
+    color: var(--primary);
+    background-color: var(--neutral);
+    box-sizing: border-box;
+    padding: 30px;
+    color: var(--accent);
+}
