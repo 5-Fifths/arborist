@@ -15,6 +15,8 @@ export default function Signup() {
                 <input className={styles.input} type="email" id="email" placeholder="email@nurture.com"/>
                 <label className={styles.label} htmlFor="password">Password</label>
                 <input className={styles.input} type="password" id="password" placeholder="Password"/>
+                <label className={styles.label} htmlFor="confirm_password">Confirm Password</label>
+                <input className={styles.input} type="password" id="password" placeholder="Password"/>
 
                 <input className={styles.button} type="submit" value="Sign Up" />
             </form>
