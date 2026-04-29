@@ -34,10 +34,16 @@
     width: 100%;
     color: var(--neutral);
 
-    .brand {
+    .brand_container {
+        display: flex;
+        align-items: center;
+        gap: .25em;
         font-size: 37pt;
-        font-weight: bold;
-        letter-spacing: .02rem;   
+
+        .brand {    
+            font-weight: bold;
+            letter-spacing: .02rem;
+        }
     }
 
     .nav {

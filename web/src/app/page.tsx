@@ -1,3 +1,4 @@
+import Logo from "./components/Logo/Logo";
 import Link from "next/link";
 
 import styles from "./styles.module.css";
@@ -7,7 +8,10 @@ export default function Home() {
     <main className={styles.main}>
       <section className={styles.hero_container}>
         <header className={styles.header}>
-          <h1 className={styles.brand}>nurture</h1>
+          <div className={styles.brand_container}>
+            <Logo  color={"white"} size={45}/>
+            <h1 className={styles.brand}>nurture</h1>
+          </div>
           <nav className={styles.nav}>
             <Link href="/contact-us" className={styles.link}>Contact Us</Link>
             <Link href="/login" className={styles.link}>Sign In</Link>

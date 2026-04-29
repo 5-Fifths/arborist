@@ -1,3 +1,5 @@
+import Logo from "@/app/components/Logo/Logo";
+
 import styles from "./layout.module.css";
 
 export default function AuthLayout({
@@ -14,6 +16,7 @@ export default function AuthLayout({
                 </div>
             </div>
             <div className={styles.login_container}>
+
                 {children}
             </div>
         </div>
