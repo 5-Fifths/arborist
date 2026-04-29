@@ -4,17 +4,10 @@
 }
 
 .hero_container {
-    background-color: var(--accent);
-    filter: saturate(120%) hue-rotate(3deg);
-    background-image: 
-        linear-gradient(
-            to top, 
-            rgba(0, 0, 0, 0.6), 
-            transparent,
-            rgba(0, 0, 0, 0.6)
-        ), 
-        url("/hero.png")
-    ;
+    background-color: rgba(0, 0, 0, .35);
+    background-blend-mode: overlay;
+    filter: hue-rotate(3deg);
+    background-image: url("/hero.png");
     background-size: 100%;
     background-repeat: no-repeat;
     height: 100vh;
@@ -37,12 +30,12 @@
     .brand_container {
         display: flex;
         align-items: center;
-        gap: .25em;
+        gap: .35em;
         font-size: 37pt;
 
         .brand {    
-            font-weight: bold;
-            letter-spacing: .02rem;
+            letter-spacing: .05rem;
+            margin-bottom: .25em;
         }
     }
 
@@ -56,11 +49,18 @@
     .link {
         padding: .75em;
         border-radius: 2em;
-        transition: .2s background-color;
+        position: relative;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, .25);
+        border: 2px solid transparent;
+        backdrop-filter: blur(10px);
+        border-radius: 2.5em;
+        transition: .2s border-color, .2s background-color;
     }
 
     .link:hover {
-        background-color: var(--accent);
+        border: 2px solid rgba(255, 255, 255, .6);
+        background-color: rgba(255, 255, 255, .35);
     }
 }
 
@@ -71,7 +71,68 @@
     align-items: center;
     justify-content: center;
     color: var(--neutral);
-    font-size: 50pt;
     position: relative;
     top: -50px;
+
+    .major_line {
+        font-size: 50pt;
+    }
+
+    .minor_line {
+        font-size: 30pt;
+        color: var(--primary-neutral);
+    }    
+}
+
+.action_button_container {
+    margin-top: 30px;
+    display: flex;
+    gap: 1.5em;
+
+    .button {
+        font-size: 15pt;
+        padding: 1.05em 1.2em;
+        letter-spacing: .02em;
+        color: var(--neutral);
+        background-color: rgba(255, 255, 255, .25);
+        border: 2px solid transparent;
+        backdrop-filter: blur(10px);
+        border-radius: 2.5em;
+        transition: .2s border-color, .2s background-color;
+    }
+
+    .button:hover {
+        border: 2px solid rgba(255, 255, 255, .6);
+        background-color: rgba(255, 255, 255, .35);
+    }
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    min-height: 100vh;
+
+    .feature_container {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .description_container {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+    }
+
+    .description_head {
+        font-size: 18pt;
+        font-family: var(--font-noto-serif);
+        color: var(--accent);
+    }
+
+    .description_text {
+        font-size: 12pt;
+        font-family: var(--font-be-vietnam-pro);
+    }
 }
