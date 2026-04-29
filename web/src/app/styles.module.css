@@ -5,12 +5,13 @@
 
 .hero_container {
     background-color: var(--accent);
-    filter: saturate(120%) brightness(90%);
+    filter: saturate(120%) hue-rotate(3deg);
     background-image: 
         linear-gradient(
             to top, 
             rgba(0, 0, 0, 0.6), 
-            transparent
+            transparent,
+            rgba(0, 0, 0, 0.6)
         ), 
         url("/hero.png")
     ;
@@ -18,16 +19,53 @@
     background-repeat: no-repeat;
     height: 100vh;
     width: 100%;
+    font-family: var(--font-noto-serif);
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 30px;
+    box-sizing: border-box;
+    height: 100px;
+    width: 100%;
     color: var(--neutral);
 
-    .hero_title {
-        font-size: 60pt;
+    .brand {
+        font-size: 37pt;
+        font-weight: bold;
+        letter-spacing: .02rem;   
     }
 
-    .hero_description {
-        font-size: 30pt;
+    .nav {
+        display: flex;
+        gap: 1em;
+        font-size: 14pt;
+        margin-right: 1em;
     }
+
+    .link {
+        padding: .75em;
+        border-radius: 2em;
+        transition: .2s background-color;
+    }
+
+    .link:hover {
+        background-color: var(--accent);
+    }
+}
+
+.text_overlay_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--neutral);
+    font-size: 50pt;
+    position: relative;
+    top: -50px;
 }

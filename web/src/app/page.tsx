@@ -1,14 +1,22 @@
+import Link from "next/link";
+
 import styles from "./styles.module.css";
 
 export default function Home() {
   return (
     <main className={styles.main}>
       <section className={styles.hero_container}>
-        <div style={styles.title_container}>
-            <h1 className={styles.hero_title}>Welcome to <span className={styles.brand}>nurture</span></h1>
-            <p className={styles.hero_description}>
-              
-            </p>
+        <header className={styles.header}>
+          <h1 className={styles.brand}>nurture</h1>
+          <nav className={styles.nav}>
+            <Link href="/contact-us" className={styles.link}>Contact Us</Link>
+            <Link href="/login" className={styles.link}>Sign In</Link>
+          </nav>
+        </header>
+
+        <div className={styles.text_overlay_container}>
+          <p>Grow your own peace of mind</p>
+          <p>Cultivate healthy habits with us</p>
         </div>
       </section>
     </main>
