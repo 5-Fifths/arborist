@@ -40,7 +40,6 @@ export default function Signup() {
 
         const response = await createUser(email, password);
 
-        // TODO: Dusplay the error to the user
         if (response !== "success") {
             const error = parseErrorCode(response);
             setError(error);
