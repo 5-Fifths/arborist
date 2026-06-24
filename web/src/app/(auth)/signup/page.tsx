@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/globals";
 import { useState } from "react";
+import { parseExpectedError } from "@/firebase/parseExpectedError";
 import Link from "next/link";
 
 import styles from "../styles.module.css";
@@ -15,16 +16,6 @@ async function createUser(email: string, password: string) {
         .catch((error) => (error as { code: string }).code);
 
     return res;
-}
-
-// Turns error code into user-friendly messages
-function parseErrorCode(errorCode: string) {
-    if (errorCode === "auth/email-already-in-use") {
-        return "This email is already in use. Please try logging in.";
-    }
-    else {
-        return errorCode;
-    }
 }
 
 export default function Signup() {
@@ -41,7 +32,7 @@ export default function Signup() {
         const response = await createUser(email, password);
 
         if (response !== "success") {
-            const error = parseErrorCode(response);
+            const error = parseExpectedError(response);
             setError(error);
 
             return;
@@ -59,7 +50,7 @@ export default function Signup() {
 
             <form id="signup-form" className={styles.form} onSubmit={handleSubmit} method={"POST"}>
                 <label className={styles.label} htmlFor="email">Email</label>
-                <input className={styles.input} type="email" name="email" placeholder="email@nurture.com"/>
+                <input className={styles.input} type="text" name="email" placeholder="email@nurture.com"/>
                 <label className={styles.label} htmlFor="password">Password</label>
                 <input className={styles.input} type="password" name="password" placeholder="Password"/>
 
