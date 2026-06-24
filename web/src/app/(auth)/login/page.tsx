@@ -4,26 +4,17 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/globals";
 import { useState } from "react";
+import { parseExpectedError } from "@/firebase/parseExpectedError";
 import Link from "next/link";
 
 import styles from "../styles.module.css";
 
 async function signInUser(email: string, password: string) {
     const res = await signInWithEmailAndPassword(auth, email, password)
-            .then(() => "success")
-            .catch((error) => (error as { code: string }).code);
+        .then(() => "success")
+        .catch((error) => (error as { code: string }).code);
     
-        return res;
-}
-
-// Turns error code into user-friendly messages
-function parseErrorCode(errorCode: string) {
-    if (errorCode === "auth/invalid-credential") {
-        return "Invalid email or password. Please try again.";
-    }
-    else {
-        return errorCode;
-    }
+    return res;
 }
 
 export default function Login() {
@@ -40,7 +31,7 @@ export default function Login() {
         const response = await signInUser(email, password);
 
         if (response !== "success") {
-            const error = parseErrorCode(response);
+            const error = parseExpectedError(response);
             setError(error);
 
             return;
