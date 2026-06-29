@@ -3,7 +3,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/globals";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/providers/AuthProvider";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
 import Link from "next/link";
 
@@ -18,6 +19,7 @@ async function signInUser(email: string, password: string) {
 }
 
 export default function Login() {
+    const { setUser } = useContext(AuthContext);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
@@ -37,6 +39,7 @@ export default function Login() {
             return;
         } 
 
+        setUser(auth.currentUser);
         router.push("/dashboard");
     }
 

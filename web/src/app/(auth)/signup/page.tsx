@@ -3,8 +3,9 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/globals";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
+import { AuthContext } from "@/providers/AuthProvider";
 import Link from "next/link";
 
 import styles from "../styles.module.css";
@@ -19,6 +20,7 @@ async function createUser(email: string, password: string) {
 }
 
 export default function Signup() {
+    const { setUser } = useContext(AuthContext);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
@@ -36,8 +38,9 @@ export default function Signup() {
             setError(error);
 
             return;
-        } 
+        }
         
+        setUser(auth.currentUser);
         router.push("/dashboard");
     };
 
