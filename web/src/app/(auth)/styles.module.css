@@ -13,12 +13,12 @@
     .input {
         background-color: var(--primary-neutral);
         border-bottom: 2px solid var(--secondary-neutral);
-        margin-bottom: 15px;
         padding: 10px;
         border-radius: 4px;
         font-size: 16px;
         transition: .3s border-color;
         font-size: 11pt;
+        width: 100%;
     }
 
     .input:focus, .input:hover {
@@ -31,13 +31,28 @@
         color: var(--neutral);
         height: 50px;
         border-radius: 25px;
-        margin-bottom: 15px;
+        margin: 15px 0px;
         transition: .2s background-color;
     }
 
     .button:hover {
         cursor: pointer;
         background-color: #435E46;
+    }
+
+    .passwordWrapper {
+        position: relative;
+
+        .toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .toggle:hover {
+            cursor: pointer;
+        }
     }
 }
 

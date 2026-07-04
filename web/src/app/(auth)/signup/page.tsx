@@ -1,72 +1,15 @@
-'use client';
-
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { auth } from "@/firebase/globals";
-import { useContext, useState } from "react";
-import { parseExpectedError } from "@/firebase/parseExpectedError";
-import { AuthContext } from "@/providers/AuthProvider";
-import Link from "next/link";
+import { AuthForm } from "../AuthForm";
+import { FormType } from "../FormType";
 
 import styles from "../styles.module.css";
 
-// Returns "success" or Firebase auth error code
-async function createUser(email: string, password: string) {
-    const res = await createUserWithEmailAndPassword(auth, email, password)
-        .then(() => "success")
-        .catch((error) => (error as { code: string }).code);
-
-    return res;
-}
-
 export default function Signup() {
-    const { setUser } = useContext(AuthContext);
-    const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
-
-    async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-
-        const response = await createUser(email, password);
-
-        if (response !== "success") {
-            const error = parseExpectedError(response);
-            setError(error);
-
-            return;
-        }
-        
-        setUser(auth.currentUser);
-        router.push("/dashboard");
-    };
-
-    // TODO: Add a way to toggle the password visibility
-
     return (
         <>
             <h2 className={styles.heading}>Create an Account</h2>
             <p>Join today to begin your journey</p>
 
-            <form id="signup-form" className={styles.form} onSubmit={handleSubmit} method={"POST"}>
-                <label className={styles.label} htmlFor="email">Email</label>
-                <input className={styles.input} type="text" name="email" placeholder="email@nurture.com"/>
-                <label className={styles.label} htmlFor="password">Password</label>
-                <input className={styles.input} type="password" name="password" placeholder="Password"/>
-
-                <input className={styles.button} type="submit" value="Sign Up" />
-
-                <p className={styles.black}>Already have an account? <Link className={styles.link} href="/login">Log in here</Link></p>
-                {
-                    error &&
-                    <div className={styles.errorContainer}>
-                        <p className={styles.errorMessage}>{error}</p>
-                    </div>
-                }
-            </form>
+            <AuthForm formType={FormType.Signup} />
         </>
     )
 }

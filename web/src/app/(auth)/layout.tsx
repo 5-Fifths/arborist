@@ -13,7 +13,7 @@ export default function AuthLayout({
                     <p className={styles.tagline}>grow your own peace of mind</p>
                 </div>
             </div>
-            <div className={styles.login_container}>
+            <div className={styles.form_container}>
                 {children}
             </div>
         </div>
