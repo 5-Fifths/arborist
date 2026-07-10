@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
+import { FormType } from "./FormType";
 import { AuthContext } from "@/providers/AuthProvider";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/globals";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
-import { FormType } from "./FormType";
 
+import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
+import ClosedEyeIcon from "@/assets/icons/ClosedEyeIcon.svg";
+import ToggleButtonWithIcon from "@/components/ToggleButtonWithIcon/ToggleButtonWithIcon";
 import Link from "next/link";
 
 import styles from "./styles.module.css";
@@ -84,8 +87,11 @@ export function AuthForm({ formType }: AuthFormProps) {
     const handleTogglePasswordVisibility = () => {
         const passwordInput = document.getElementById("password");
 
-        if (passwordInput) {
+        if (passwordInput?.getAttribute("type") === "password") {
             passwordInput.setAttribute("type", "text");
+        }
+        else {
+            passwordInput?.setAttribute("type", "password");
         }
     }
 
@@ -96,9 +102,14 @@ export function AuthForm({ formType }: AuthFormProps) {
             <label className={styles.label} htmlFor="password">Password</label>
             <div className={styles.passwordWrapper}>
                 <input className={styles.input} id="password" type="password" name="password" placeholder="Password"/>
-                {/* <button className={styles.toggle} type="button" onClick={handleTogglePasswordVisibility}>
-                    <SVGIcon icon={OpenEyeIcon} />
-                </button> */}
+                <ToggleButtonWithIcon
+                    className={styles.toggle}
+                    onSrc={OpenEyeIcon.src}
+                    offSrc={ClosedEyeIcon.src}
+                    size={25}
+                    alt="Show/Hide"
+                    additionalFunction={handleTogglePasswordVisibility}
+                />
             </div>
 
             <input className={styles.button} type="submit" value={config.buttonText} />
