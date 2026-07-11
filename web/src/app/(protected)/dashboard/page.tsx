@@ -26,19 +26,19 @@ export default function Dashboard() {
     const customDate = date.replace(/,/g, ' ּּּ· ');
 
     return (
-        <>
+        <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{customDate}</p>
                 <p className={styles.welcomeMessage}>{user?.displayName ? `${user.displayName}'s ` : ''}Dashboard</p>
             </div>
-            <main className={styles.mainContainer}>
+            <div className={styles.mainContainer}>
                 <section className={styles.sectionTitle}>TODAY'S TASKS</section>
                 <section className={styles.sectionTitle}>URGENT PROJECTS</section>
                 <section className={styles.sectionTitle}>URGENT TASKS</section>
                 <section className={styles.sectionContainer}></section>
                 <section className={styles.sectionContainer}></section>
                 <section className={styles.sectionContainer}></section>
-            </main>
-        </>
+            </div>
+        </main>
     )
 }
