@@ -1,0 +1,52 @@
+.container {
+    width: 100%;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    .date {
+        color: var(--accent);
+        font-family: var(--font-be-vietnam-pro);
+        font-size: 1.07rem;
+    }
+
+    .welcomeMessage {
+        font-family: var(--font-noto-serif);
+        font-size: 2.5rem;
+        font-weight: 600;
+    }
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: 4fr 3fr 3fr;
+    grid-template-rows: 75px auto;
+    grid-gap: 1px;
+    box-sizing: border-box;
+    background-color: #c7cdbf;
+    border: 1px solid #c7cdbf;
+
+    .sectionTitle {
+        box-sizing: border-box;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        font-family: var(--font-be-vietnam-pro);
+        font-size: 1.05rem;
+        letter-spacing: .5px;
+        padding: 20px;
+        background-color: white;
+    }
+
+    .sectionContainer {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        background-color: white;
+    }
+}
