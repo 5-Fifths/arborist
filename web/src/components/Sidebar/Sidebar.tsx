@@ -7,7 +7,7 @@ export default function Sidebar() {
     return (
         <aside className={styles.container}>
             <div className={styles.logoContainer}>
-                <Image src="nurture_logo.svg" alt="" width={30} height={30} />
+                <Image src="nurture_logo.svg" alt="" width={35} height={35} />
                 <h1 className={styles.brand}>nurture</h1>
             </div>
             <nav className={styles.navWrapper}>
@@ -16,7 +16,7 @@ export default function Sidebar() {
                 <LinkWithIcon src="/CalendarIcon.svg" href="/calendar" link_name="Calendar" />
                 <LinkWithIcon src="/StopwatchIcon.svg" href="/focus" link_name="Focus Timer" />
                 <LinkWithIcon src="/PottedPlantIcon.svg" href="/garden" link_name="My Garden" />
-            </nav>
+            </nav>  
         </aside>
     )
 }
