@@ -1,9 +1,12 @@
+type ItemType = "project" | "task";
+
 export interface WorkItem {
     // Identifying information
     item_id: string;
     user_id: string;
 
     // Item data
+    item_type: ItemType;
     title: string;
     description: string;
     due_date: Date;

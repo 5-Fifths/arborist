@@ -15,6 +15,9 @@ interface DashboardTaskProps {
 export default function DashboardTask({ task }: DashboardTaskProps) {
     const [complete, setComplete] = useState(task.complete);
 
+    // Render only the first tag in the list
+    const firstTag = task.tags?.at(0) ?? undefined;
+
     useEffect(() => {
         
     }, [complete])
@@ -30,14 +33,10 @@ export default function DashboardTask({ task }: DashboardTaskProps) {
         <div className={styles.container}>
             <div className={styles.leftSide}>
                 <input type="checkbox" className={styles.checkbox} onChange={handleSubmit} checked={complete} />
-                <p className={complete ? styles.strikethrough : ''}>{task.title}</p>
+                <p className={`${styles.title} ${complete ? styles.strikethrough : ''}`}>{task.title}</p>
             </div>
             <div className={styles.tagContainer}>
-                {task.tags?.map((tag) => {
-                    return (
-                        <div className={styles.tag} key={tag}>{tag}</div>
-                    )
-                }) ?? ''}
+                {firstTag ? <span className={styles.tag}>{firstTag}</span> : ''}
             </div>
         </div>
     )

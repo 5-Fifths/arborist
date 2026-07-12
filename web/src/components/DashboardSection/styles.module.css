@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-right: 1px solid #c7cdbf;
+}
+
+.sectionTitle {
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-dm-mono);
+    font-size: 1.05rem;
+    letter-spacing: .5px;
+    padding: 20px;
+    border-bottom: 1px solid #c7cdbf;
+
+    .addButton {
+        width: auto;
+        height: 100%;
+        font-size: .9rem;
+        padding: 0px 10px;
+        color: var(--accent);
+        font-family: var(--font-dm-mono);
+        cursor: pointer;
+        transition: background-color .1s;
+    }
+}
+
+.content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background-color: white;
+    min-width: 0;
+    flex: 1;
+
+    .itemWrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px 10px;
+        border-bottom: 1px solid #c7cdbf;
+    }
+
+    .number {
+        font-family: var(--font-dm-mono);
+        color: var(--accent);
+        font-size: .85rem;
+    }
+}

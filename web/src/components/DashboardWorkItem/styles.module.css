@@ -5,6 +5,7 @@
     color: var(--primary);
     font-family: var(--font-be-vietnam-pro);
     width: 100%;
+    min-width: 0;
 }
 .strikethrough {
     color: var(--accent);
@@ -15,6 +16,8 @@
     display: flex;
     gap: 10px;
     align-items: center;
+    flex: 1;
+    min-width: 0;
 }
 
 .checkbox {
@@ -23,7 +26,14 @@
     width: 15px;
     height: 15px;
     border-radius: 15px;
+    flex-shrink: 0;
     transition: background-color .1s;
+}
+
+.title {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .checkbox:checked::before {
@@ -39,7 +49,9 @@
 
 .tagContainer {
     display: flex;
+    flex-shrink: 0;
     gap: 3px;
+    margin-left: 10px;
 
     .tag {
         padding: 3px 8px;
