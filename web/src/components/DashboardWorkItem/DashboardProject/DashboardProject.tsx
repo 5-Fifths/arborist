@@ -1,3 +1,5 @@
+'use client';
+
 import { Project } from "@/types/WorkItem";
 import { useState } from "react";
 

@@ -3,7 +3,6 @@
 import { Task } from "@/types/WorkItem";
 import { useState, useEffect } from "react";
 
-import taskStyles from "./DashboardTask.module.css";
 import styles from "../styles.module.css";
 
 interface DashboardTaskProps {
