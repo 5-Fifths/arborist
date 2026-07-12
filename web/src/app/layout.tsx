@@ -1,7 +1,7 @@
 import { AuthProvider } from "@/providers/AuthProvider";
 
 import type { Metadata } from "next";
-import { Noto_Serif, Be_Vietnam_Pro } from "next/font/google";
+import { Noto_Serif, Be_Vietnam_Pro, DM_Mono } from "next/font/google";
 import "./globals.css";
 
 const NotoSerif = Noto_Serif({
@@ -14,6 +14,12 @@ const BeVietnamPro = Be_Vietnam_Pro({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
 });
+
+const DMMono = DM_Mono({
+  variable: "--font-dm-mono",
+  weight: ["300", "400", "500"],
+  subsets: ["latin"]
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${NotoSerif.variable} ${BeVietnamPro.variable} h-full antialiased`}
+      className={`${NotoSerif.variable} ${BeVietnamPro.variable} ${DMMono.variable} h-full antialiased`}
     >
       <AuthProvider>
         <body className="min-h-full flex flex-col">{children}</body>
