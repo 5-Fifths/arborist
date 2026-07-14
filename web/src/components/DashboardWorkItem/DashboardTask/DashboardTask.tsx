@@ -2,6 +2,7 @@
 
 import { Task } from "@/types/WorkItem";
 import { useState, useEffect } from "react";
+import Tag from "@/components/Tag/Tag";
 
 import styles from "../styles.module.css";
 
@@ -35,7 +36,11 @@ export default function DashboardTask({ task }: DashboardTaskProps) {
                 <p className={`${styles.title} ${complete ? styles.strikethrough : ''}`}>{task.title}</p>
             </div>
             <div className={styles.tagContainer}>
-                {firstTag ? <span className={styles.tag}>{firstTag}</span> : ''}
+                {firstTag ? 
+                <Tag 
+                    content={firstTag}
+                /> 
+                : ''}
             </div>
         </div>
     )

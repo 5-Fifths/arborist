@@ -1,0 +1,12 @@
+.tag {
+    padding: 10px;
+    font-size: .85rem;
+    height: 30px;
+    line-height: 10px;
+    border-radius: 15px;
+    font-family: var(--font-dm-mono);
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

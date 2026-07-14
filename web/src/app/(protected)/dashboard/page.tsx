@@ -1,9 +1,11 @@
 'use client';
 
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider"
 import { useProtectedRoute } from "../_util/useProtectedRoute";
 import { WorkItem, Task, Project } from "@/types/WorkItem";
+
+import WorkItemCreationModal from "@/components/WorkItemCreationModal/WorkItemCreationModal";
 import DashboardSection from "@/components/DashboardSection/DashboardSection";
 import DashboardTask from "@/components/DashboardWorkItem/DashboardTask/DashboardTask";
 import DashboardProject from "@/components/DashboardWorkItem/DashboardProject/DashboardProject";
@@ -16,6 +18,9 @@ export default function Dashboard() {
     // Redirect the user if they are not logged in
     useProtectedRoute({user, loading});
 
+    const [newItem, setNewItem] = useState<WorkItem>();
+    const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
+    const [modalOpen, setModalOpen] = useState(false);
     const [tasks, setTasks] = useState<Task[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
     const [urgentTasks, setUrgentTasks] = useState<Task[]>([]);
@@ -32,6 +37,10 @@ export default function Dashboard() {
         }
     ).replace(/,/g, ' ּּּ· ');
 
+    // task => setTasks(prev => [...prev, task])
+    // project => setProjects(prev => [...prev, project])
+    // task => setUrgentTasks(prev => [...prev, task])
+
     return (
         <main className={styles.container}>
             <div className={styles.headerContainer}>
@@ -43,38 +52,52 @@ export default function Dashboard() {
                     <DashboardSection
                         title={"TODAY'S TASKS"}
                         workItems={tasks}
-                        renderItem={(task: Task) => {
-                            return (
-                                <DashboardTask key={task.item_id} task={task} />
-                            )
+                        renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} />}
+                        onAdd={() => {
+                            setModalOpen(true);
+                            setModalType("Task");;
                         }}
-                        onAdd={task => setTasks(prev => [...prev, task])}
                     />
                 </div>
                 <div style={{"flex": 3, "minWidth": 0}}>
                     <DashboardSection 
                         title={"URGENT TASKS"}
                         workItems={urgentTasks}
-                        renderItem={(task: Task) => {
-                            return (
-                                <DashboardTask key={task.item_id} task={task} />
-                            )
+                        renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} />}
+                        onAdd={() => {
+                            setModalOpen(true);
+                            setModalType("Urgent Task");
                         }}
-                        onAdd={project => setProjects(prev => [...prev, project])}
                     />
                 </div>
                 <div style={{"flex": 3, "minWidth": 0}}>
                     <DashboardSection 
                         title={"URGENT PROJECTS"}
                         workItems={projects}
-                        renderItem={(project: Project) => {
-                            return (
-                                <DashboardProject key={project.item_id} project={project}/>
-                            )
+                        renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project}/>}
+                        onAdd={() => {
+                            setModalOpen(true);
+                            setModalType("Project");;
                         }}
-                        onAdd={task => setUrgentTasks(prev => [...prev, task])}
                     />
                 </div>
+
+                {modalOpen && modalType ?
+                    <WorkItemCreationModal 
+                        type={modalType}
+                        onSubmit={() => {
+                            setModalOpen(false);
+                            setModalType(undefined);
+                        }}
+
+                        onClose={() => {
+                            setModalOpen(false);
+                            setModalType(undefined);
+                        }}
+                    />
+                    :
+                    null
+                }
             </div>
         </main>
     )

@@ -1,0 +1,119 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.container {
+    position: fixed;
+    margin: auto;
+    inset: 0;
+    background-color: white;
+    padding: 30px;
+    width: 450px;
+    height: fit-content;
+    z-index: 1;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    > textarea {
+        resize: none;
+    }
+    
+    .input {
+        border: 1px solid #c7cdbf;
+        padding: 10px;
+        font-family: var(--font-dm-mono);
+        font-size: .85rem;
+        color: #959A8F;
+    }
+
+    .title {
+        width: 225px;
+    }
+
+    .description { 
+        height: 100px;
+        resize: none;
+    }
+
+    .tagTitle {
+        font-size: 1rem;
+        font-family: var(--font-be-vietnam-pro);
+    }
+
+    .tagContainer {
+        min-height: 10px;
+        height: 100px;
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.button {
+        border: 1px solid #c7cdbf;
+        padding: 10px;
+        font-family: var(--font-dm-mono);
+        font-size: .85rem;
+        color: #959A8F;
+        transition: 
+            background-color .1s,
+            border-color .1s,
+            color .1s
+        ;
+    }
+
+    .button:hover {
+        cursor: pointer;
+        border-color: white;
+        color: white;
+    }
+
+    .cancelButton:hover {
+        background-color: #959A8F;
+    }
+
+    .createButton:hover {
+        background-color: var(--accent);
+    }
+
+.header {
+    font-family: var(--font-be-vietnam-pro);
+    font-size: 1.2rem;
+    margin-bottom: 1.3rem;
+}
+
+.horizontal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.error {
+    font-size: .85rem;
+    font-family: var(--font-dm-mono);
+    background-color: #FAA0A0;
+    color: #3C0008;
+    width: 100%;
+    padding: 15px;
+    position: absolute;
+    top: -75px;
+    left: 0px;
+    width: 450px;
+}

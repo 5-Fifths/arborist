@@ -6,13 +6,13 @@ interface DashboardSectionProps<T extends WorkItem> {
     title: string,
     workItems: T[],
     renderItem: (item: T) => React.ReactNode,
-    onAdd?: () => void
+    onAdd: () => void
 }
 
 export default function DashboardSection<T extends WorkItem>({
     title, 
     workItems, 
-    renderItem, 
+    renderItem,
     onAdd
 }: DashboardSectionProps<T>) { 
     return (

@@ -2,6 +2,7 @@
 
 import { Project } from "@/types/WorkItem";
 import { useState } from "react";
+import Tag from "@/components/Tag/Tag";
 
 import projectStyles from "./DashboardProject.module.css";
 import styles from "../styles.module.css";
@@ -57,7 +58,11 @@ export default function DashboardProject({ project }: DashboardProjectProps) {
                 <div className={projectStyles.header}>
                     <div className={`${projectStyles.title} ${complete ? styles.strikethrough : ''}`}>{project.title}</div>
                     <div className={styles.tagContainer}>
-                        {firstTag ? <span className={styles.tag}>{firstTag}</span> : ''}
+                        {firstTag ? 
+                        <Tag 
+                            content={firstTag}
+                        /> 
+                        : ''}
                     </div>
                 </div>
                 <div className={projectStyles.progressBarContainer}>
