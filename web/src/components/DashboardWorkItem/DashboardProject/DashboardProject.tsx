@@ -8,7 +8,8 @@ import projectStyles from "./DashboardProject.module.css";
 import styles from "../styles.module.css";
 
 interface DashboardProjectProps {
-    project: Project;
+    project: Project,
+    onComplete: (id: string, type: "Task" | "Project") => void
 }
 
 function countCompletedSubtasks(project: Project) {
@@ -29,13 +30,7 @@ function countCompletedSubtasks(project: Project) {
     return 0;
 }
 
-export default function DashboardProject({ project }: DashboardProjectProps) {
-    const [complete, setComplete] = useState(project.complete);
-
-    const handleSubmit = () => {
-        setComplete(!complete);
-    }
-
+export default function DashboardProject({ project, onComplete }: DashboardProjectProps) {
     // Display only the first tag in the project
     const firstTag = project.tags?.at(0) ?? undefined;
 
@@ -53,10 +48,15 @@ export default function DashboardProject({ project }: DashboardProjectProps) {
 
     return (
         <div className={styles.container}>
-            <input type="checkbox" className={styles.checkbox} onChange={handleSubmit} checked={complete} />
+            <input 
+            type="checkbox" 
+                className={styles.checkbox} 
+                checked={project.complete}
+                onChange={() => onComplete(project.item_id, "Project")} 
+            />
             <div className={projectStyles.container}>
                 <div className={projectStyles.header}>
-                    <div className={`${projectStyles.title} ${complete ? styles.strikethrough : ''}`}>{project.title}</div>
+                    <div className={`${projectStyles.title} ${project.complete ? styles.strikethrough : ''}`}>{project.title}</div>
                     <div className={styles.tagContainer}>
                         {firstTag ? 
                         <Tag 
@@ -66,10 +66,10 @@ export default function DashboardProject({ project }: DashboardProjectProps) {
                     </div>
                 </div>
                 <div className={projectStyles.progressBarContainer}>
-                    <div className={projectStyles.progressBar} style={{'width': (complete ? 100 : (percentage*100))+'%'}} />
+                    <div className={projectStyles.progressBar} style={{'width': (project.complete ? 100 : (percentage*100))+'%'}} />
                 </div>
                 <div className={projectStyles.footer}>
-                    <span className={projectStyles.percentage}>{complete ? 100 : percentage*100}%</span>
+                    <span className={projectStyles.percentage}>{project.complete ? 100 : percentage*100}%</span>
                     <p className={projectStyles.daysTillDue}>{daysTillDue}d</p>
                 </div>
             </div>

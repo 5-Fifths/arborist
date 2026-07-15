@@ -7,33 +7,27 @@ import Tag from "@/components/Tag/Tag";
 import styles from "../styles.module.css";
 
 interface DashboardTaskProps {
-    task: Task;
+    task: Task,
+    onComplete: (id: string, type: "Task" | "Project") => void
 }
 
 // WIP: Showing checked status of button
 
-export default function DashboardTask({ task }: DashboardTaskProps) {
-    const [complete, setComplete] = useState(task.complete);
-
+export default function DashboardTask({ task, onComplete }: DashboardTaskProps) {
     // Render only the first tag in the list
     const firstTag = task.tags?.at(0) ?? undefined;
-
-    useEffect(() => {
-        
-    }, [complete])
-
-    const handleSubmit = () => {
-        setComplete(!complete);
-
-        // TODO: add firebase logic here too
-    }
 
     // Add no-wrap and ellipses for text that overflows
     return (
         <div className={styles.container}>
             <div className={styles.leftSide}>
-                <input type="checkbox" className={styles.checkbox} onChange={handleSubmit} checked={complete} />
-                <p className={`${styles.title} ${complete ? styles.strikethrough : ''}`}>{task.title}</p>
+                <input 
+                    type="checkbox" 
+                    className={styles.checkbox}
+                    checked={task.complete}
+                    onChange={() => onComplete(task.item_id, "Task")}
+                />
+                <p className={`${styles.title} ${task.complete ? styles.strikethrough : ''}`}>{task.title}</p>
             </div>
             <div className={styles.tagContainer}>
                 {firstTag ? 

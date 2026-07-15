@@ -1,4 +1,4 @@
-type ItemType = "project" | "task";
+export type ItemType = "Project" | "Task";
 
 export interface WorkItem {
     // Identifying information

@@ -24,7 +24,7 @@ export default function DashboardSection<T extends WorkItem>({
             <div className={styles.content}>
                 {workItems.map((item, index) => {
                     return (
-                        <div className={styles.itemWrapper}>
+                        <div key={index} className={styles.itemWrapper}>
                             <p className={styles.number}>{index < 10 ? `0${index + 1}` : index + 1}</p>
                             {renderItem(item)}
                         </div>

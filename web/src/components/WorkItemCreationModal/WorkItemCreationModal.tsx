@@ -1,13 +1,15 @@
 'use client';
 
-import { MouseEventHandler, useState } from "react";
+import { useState, useContext } from "react";
+import { WorkItem } from "@/types/WorkItem";
+import { AuthContext } from "@/providers/AuthProvider";
 import Tag from "../Tag/Tag";
 
 import styles from "./styles.module.css";
 
 interface WorkItemCreationModalProps {
     type: "Task" | "Project" | "Urgent Task",
-    onSubmit: () => void,
+    onSubmit: (workItem: WorkItem) => void,
     onClose: () => void,
 }
 
@@ -16,8 +18,10 @@ export default function WorkItemCreationModal({
     onSubmit, 
     onClose
 }: WorkItemCreationModalProps) {   
+    const { user, loading } = useContext(AuthContext);
+
     const [currentTag, setCurrentTag] = useState<string>("");
-    const [tags, setTags] = useState<string[]>([]);
+    const [tags, setTags] = useState(type !== "Task" ? ["Urgent"] : []);
     const [error, setError] = useState<string>();
 
     const handleAddTag = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,6 +31,7 @@ export default function WorkItemCreationModal({
 
         if (!tag) {
             setError("Please enter a valid tag.");
+
             return;
         }
 
@@ -45,6 +50,35 @@ export default function WorkItemCreationModal({
         setCurrentTag("");
     }
 
+    function createWorkItem(formData: FormData) {
+        const uid = user?.uid;
+        const itemType = type === "Project" ? "Project" : "Task";
+
+        if (!uid) {
+            setError("User ID cannot be found.");
+
+            return undefined;
+        }
+
+        const workItem: WorkItem = {
+            user_id: uid,
+            item_id: crypto.randomUUID(),
+            
+            item_type: itemType,
+            title: formData.get("title") as string,
+            description: formData.get("description") as string ?? "",
+            due_date: new Date(formData.get("due_date") as string),
+            tags: tags ?? undefined,
+            complete: false
+        }
+
+        return workItem;
+    }
+
+    if (!loading && !user) {
+        // TODO: Display loading; and start timer?
+    }
+
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.container} onClick={(e) => e.stopPropagation()}>
@@ -56,12 +90,44 @@ export default function WorkItemCreationModal({
                     null
                 }
                 <div className={styles.header}>Create a New {type}</div>
-                <form className={styles.form}>
+                <form 
+                    className={styles.form}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+
+                        const formData = new FormData(e.currentTarget); 
+                        
+                        const workItem = createWorkItem(formData);
+
+                        if (!workItem) {
+                            setError("Work item creation failed; please try again later.");
+
+                            return;
+                        }
+
+                        onSubmit(workItem);
+                    }}
+                >
                     <div className={styles.horizontal}>
-                        <input type="text" className={`${styles.input} ${styles.title}`} placeholder="Title" />
-                        <input type="date" className={styles.input} placeholder="1/1/2000" />
+                        <input 
+                            name="title"
+                            type="text"  
+                            placeholder="Title"
+                            className={`${styles.input} ${styles.title}`}
+                            required
+                        />
+                        <input
+                            name="due_date" 
+                            type="date" 
+                            className={styles.input}
+                            required
+                        />
                     </div>
-                    <textarea name="description" className={`${styles.input} ${styles.description}`} placeholder="Description" />
+                    <textarea
+                        name="description" 
+                        placeholder="Description" 
+                        className={`${styles.input} ${styles.description}`} 
+                    />  
                     <div className={styles.horizontal}>
                         <input 
                             type="text" 
@@ -89,8 +155,11 @@ export default function WorkItemCreationModal({
                         })}
                     </div>
                     <div className={styles.actions}>
-                        <button onClick={onClose} className={`${styles.input} ${styles.cancelButton} ${styles.button}`}>Cancel</button>
-                        <button onClick={onSubmit} className={`${styles.input} ${styles.createButton} ${styles.button}`}>Create</button>
+                        <button type="button" onClick={onClose} className={`${styles.input} ${styles.cancelButton} ${styles.button}`}>Cancel</button>
+                        <button 
+                            type="submit" 
+                            className={`${styles.input} ${styles.createButton} ${styles.button}`}
+                        >Create</button>
                     </div>
                 </form>
             </div>
