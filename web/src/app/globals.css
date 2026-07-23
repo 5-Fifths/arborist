@@ -8,3 +8,7 @@
   --primary: #21221F;
   --secondary: #D2D5CD;
 }
+
+* {
+  box-sizing: border-box;
+}
