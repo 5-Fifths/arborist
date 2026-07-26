@@ -5,7 +5,8 @@ import { useContext, useState } from "react";
 import { FormType } from "./FormType";
 import { AuthContext } from "@/providers/AuthProvider";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/globals";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "@/firebase/globals";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
@@ -20,19 +21,42 @@ interface AuthFormProps {
 }
 
 async function signInUser(email: string, password: string) {
-    const res = await signInWithEmailAndPassword(auth, email, password)
-        .then(() => "success")
-        .catch((error) => (error as { code: string }).code);
-    
-    return res;
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+        return "success";
+    }
+    catch (error) {
+        return (error as { code: string }).code;
+    }
 }
 
 async function createUser(email: string, password: string) {
-    const res = await createUserWithEmailAndPassword(auth, email, password)
-        .then(() => "success")
-        .catch((error) => (error as { code: string }).code);
+    try {
+        // Firebase Auth
+        const authRes = await createUserWithEmailAndPassword(auth, email, password);
 
-    return res;
+        // Firestore doc
+        // When ready, uncomment coins and plants
+        const initialData = {
+            creation_date: serverTimestamp(),
+            last_updated: serverTimestamp(),
+            tasks: [],
+            projects: [],
+            // coins: 0,
+            // plants: {}
+        }
+
+        await setDoc(
+            doc(db, "users", authRes.user.uid), 
+            initialData
+        )
+
+        return "success";
+    }
+    catch (error) {
+        return (error as { code: string }).code;
+    }
 }
 
 const formConfig = {
@@ -68,7 +92,7 @@ export function AuthForm({ formType }: AuthFormProps) {
 
         if (formType === FormType.Login) {
             response = await signInUser(email, password);
-        } else {
+        } else { // FormType.Signup
             response = await createUser(email, password);
         }
 
@@ -83,7 +107,6 @@ export function AuthForm({ formType }: AuthFormProps) {
         router.push("/dashboard");
     }
 
-    // TODO: Add a way to toggle the password visibility
     const handleTogglePasswordVisibility = () => {
         const passwordInput = document.getElementById("password");
 
