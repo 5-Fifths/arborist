@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Image from "next/image";
 
 interface ToggleButtonWithIconProps {
@@ -6,29 +5,24 @@ interface ToggleButtonWithIconProps {
     offSrc: string;
     size: number;
     alt: string;
-    additionalFunction: () => void;
+    isOn: boolean;
+    onToggle: () => void;
     className?: string; 
 }
 
 export default function ToggleButtonWithIcon({
-    onSrc, 
+    onSrc,
     offSrc, 
     size = 32,
     alt,
-    additionalFunction,
+    isOn,
+    onToggle,
     className
 }: ToggleButtonWithIconProps) {
-    const [isOn, setIsOn] = useState(false);
     const imageSrc = isOn ? onSrc : offSrc;
 
-    function handleClick() {
-        setIsOn(prev => !prev);
-
-        additionalFunction();
-    }
-
     return (
-        <button className={`${className || ''}`} type="button" onClick={handleClick}>
+        <button className={`${className || ''}`} type="button" onClick={onToggle}>
             <Image 
                 src={imageSrc}
                 width={size}
