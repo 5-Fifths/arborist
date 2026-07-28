@@ -4,8 +4,8 @@ import { useContext, useState } from "react";
 import { FormType } from "./FormType";
 import { AuthContext } from "@/providers/AuthProvider";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
-import { User } from "firebase/auth";
-import createUser from "@/firebase/auth/createUser";
+import { createUser } from "@/firebase/auth/createUser";
+import ensureUserDocExists from "@/firebase/auth/ensureUserDoc";
 import signInUser from "@/firebase/auth/signInUser";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
@@ -13,6 +13,7 @@ import ClosedEyeIcon from "@/assets/icons/ClosedEyeIcon.svg";
 import ToggleButtonWithIcon from "@/components/ToggleButtonWithIcon/ToggleButtonWithIcon";
 import Link from "next/link";
 import styles from "./styles.module.css";
+
 interface AuthFormProps {
     formType: FormType;
 }
@@ -31,8 +32,6 @@ const formConfig = {
         linkHref: "/login",
     }
 }
-
-// TODO: ADD LOADING STATE
 
 export function AuthForm({ formType }: AuthFormProps) {
     const { setUser } = useContext(AuthContext);
@@ -58,13 +57,15 @@ export function AuthForm({ formType }: AuthFormProps) {
         const user = await authAction(email, password);
 
         if (!user.success) {
-            const error = parseExpectedError(user.result as string);
+            const error = parseExpectedError(user.error);
             setError(error);
 
             return;
-        } 
+        }
 
-        setUser(user.result as User);
+        await ensureUserDocExists(user.user);
+
+        setUser(user.user);
         router.push("/dashboard");
     }
 

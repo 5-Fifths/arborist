@@ -1,15 +1,40 @@
 import { FirebaseError } from "firebase/app";
-import { auth, db } from "../globals";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
-export default async function createUser(email: string, password: string) {
+import { auth, db } from "../globals";
+import { AuthResult } from "../types/AuthResult";
+
+export async function createUser(email: string, password: string): Promise<AuthResult> {
     try {
         // Firebase Auth
         const authRes = await createUserWithEmailAndPassword(auth, email, password);
 
-        // Firestore doc
-        // When ready, uncomment coins and plants
+        // Firestore Doc
+        await createUserDoc(authRes.user.uid);
+
+        return {
+            success: true,
+            user: authRes.user
+        }
+    }
+    catch (error) {
+        if (error instanceof FirebaseError) {
+            return {
+                success: false,
+                error: (error as { code: string }).code
+            }
+        }
+
+        return {
+            success: false,
+            error: (error as { code: string }).code
+        }
+    }
+}
+
+export async function createUserDoc(uid: string) {
+    try {
         const initialData = {
             creation_date: serverTimestamp(),
             last_updated: serverTimestamp(),
@@ -20,26 +45,25 @@ export default async function createUser(email: string, password: string) {
         }
 
         await setDoc(
-            doc(db, "users", authRes.user.uid), 
+            doc(db, "users", uid), 
             initialData
         )
 
         return {
-            success: true,
-            result: authRes.user
+            success: true
         };
     }
     catch (error) {
         if (error instanceof FirebaseError) {
             return {
                 success: false,
-                result: (error as { code: string }).code
+                error: (error as { code: string }).code
             }
         }
 
         return {
             success: false,
-            result: (error as { code: string }).code
+            error: (error as { code: string }).code
         }
     }
-} 
+}

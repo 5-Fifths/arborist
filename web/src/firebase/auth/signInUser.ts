@@ -1,27 +1,29 @@
 import { FirebaseError } from "firebase/app";
-import { auth } from "../globals";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-export default async function signInUser(email: string, password: string) {
+import { auth } from "../globals";
+import { AuthResult } from "../types/AuthResult";
+
+export default async function signInUser(email: string, password: string): Promise<AuthResult> {
     try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
 
         return {
             success: true,
-            result: cred.user
+            user: cred.user
         }
     }
     catch (error) {
         if (error instanceof FirebaseError) {
             return {
                 success: false,
-                result: (error as { code: string }).code
+                error: (error as { code: string }).code
             }
         }
 
         return {
             success: false,
-            result: (error as string)
+            error: (error as string)
         }
     }
 }
