@@ -1,27 +1,27 @@
 import { FirebaseError } from "firebase/app";
-import { auth } from "../globals";
 import { signOut } from "firebase/auth";
+
+import { auth } from "../globals";
 
 export async function signOutUser() {
     try {
-        const res = await signOut(auth);
+        await signOut(auth);
 
         return {
-            success: true,
-            result: res
+            success: true
         }
     }
     catch (error) {
         if (error instanceof FirebaseError) {
             return {
                 success: false,
-                result: (error as { code: string }).code
+                error: (error as { code: string }).code
             }
         }
 
         return {
             success: false,
-            result: (error as string)
+            error: (error as string)
         }
     }
 }
