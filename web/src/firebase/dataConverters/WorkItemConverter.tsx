@@ -7,16 +7,17 @@ import {
 
 interface WorkItemDbModel {
     // Identifying information
-    item_id: string;
-    user_id: string;
+    item_id: string,
+    user_id: string,
+    item_type: "Project" | "Task",
 
     // Item data
-    title: string;
-    description: string;
-    due_date: Timestamp;
-    complete: boolean;
-    truncated_tasks: TruncatedTask[];
-    tags: string[];
+    title: string,
+    description: string,
+    due_date: Timestamp,
+    complete: boolean,
+    truncated_tasks: TruncatedTask[],
+    tags: string[]
 }
 
 export const WorkItemConverter = {
@@ -31,6 +32,7 @@ export const WorkItemConverter = {
             return {
                 item_id: WorkItem.item_id,
                 user_id: WorkItem.user_id,
+                item_type: WorkItem.item_type,
     
                 title: WorkItem.title,
                 description: WorkItem.description,
@@ -51,6 +53,7 @@ export const WorkItemConverter = {
             return {
                 item_id: data.item_id,
                 user_id: data.user_id,
+                item_type: data.item_type,
     
                 title: data.title,
                 description: data.description,
