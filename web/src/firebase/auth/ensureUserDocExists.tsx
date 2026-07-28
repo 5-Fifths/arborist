@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 import { db } from "../globals";
 import { createUserDoc } from "./createUser";

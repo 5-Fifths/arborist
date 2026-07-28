@@ -5,7 +5,7 @@ import { FormType } from "./FormType";
 import { AuthContext } from "@/providers/AuthProvider";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
 import { createUser } from "@/firebase/auth/createUser";
-import ensureUserDocExists from "@/firebase/auth/ensureUserDoc";
+import ensureUserDocExists from "@/firebase/auth/ensureUserDocExists";
 import signInUser from "@/firebase/auth/signInUser";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
