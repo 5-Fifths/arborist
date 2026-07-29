@@ -1,14 +1,16 @@
 'use client';
 
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider"
 import { useProtectedRoute } from "../_util/useProtectedRoute";
-import { WorkItem, Task, Project } from "@/types/WorkItem";
+import { Task, Project } from "@/types/WorkItem";
+import { uploadWorkItem } from "@/firebase/uploadWorkItem";
 
 import WorkItemCreationModal from "@/components/WorkItemCreationModal/WorkItemCreationModal";
 import DashboardSection from "@/components/DashboardSection/DashboardSection";
 import DashboardTask from "@/components/DashboardWorkItem/DashboardTask/DashboardTask";
 import DashboardProject from "@/components/DashboardWorkItem/DashboardProject/DashboardProject";
+import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 
 import styles from "./styles.module.css";
 
@@ -17,8 +19,6 @@ export default function Dashboard() {
 
     // Redirect the user if they are not logged in
     useProtectedRoute({user, loading});
-
-    // TODO: Show loading instead of dashboard while user or loading is not defined appropriately
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
@@ -56,11 +56,17 @@ export default function Dashboard() {
         }
     };
 
+    if (!user || loading) {
+        return (
+            <LoadingScreen />
+        )
+    }
+
     return (
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{date}</p>
-                <p className={styles.welcomeMessage}>{user?.displayName ? `${user.displayName}'s ` : ''}Dashboard</p>
+                <p className={styles.welcomeMessage}>{user.displayName ? `${user.displayName}'s ` : ''}Dashboard</p>
             </div>
             <div className={styles.mainContainer}>
                 <div style={{"flex": 4, "minWidth": 0}}>
@@ -110,6 +116,8 @@ export default function Dashboard() {
                             else {
                                 setTasks(prev => [...prev, workItem]);
                             }
+
+                            uploadWorkItem(user, workItem);
                         }}
 
                         onClose={() => {
