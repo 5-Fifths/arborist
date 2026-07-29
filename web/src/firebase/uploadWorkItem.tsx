@@ -7,7 +7,7 @@ import { FirebaseError } from "firebase/app";
 
 export async function uploadWorkItem(user: User, workItem: WorkItem) {
     const collectionName = workItem.item_type === "Task" ? "tasks" : "projects"
-    const docRef = doc(db, user.uid, collectionName, workItem.item_id);
+    const docRef = doc(db, "users", user.uid, collectionName, workItem.item_id);
 
     try {
         await setDoc(docRef.withConverter(WorkItemConverter), workItem);
