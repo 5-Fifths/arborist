@@ -19,9 +19,7 @@ export function useProtectedRoute({user, loading}: protectedRouteProps) {
     useQuery({
         queryKey: ['userDoc', user?.uid],
         queryFn: async () => {
-            ensureUserDocExists(user!);
-
-            return
+            return ensureUserDocExists(user!);
         },
         enabled: !!user && !loading,
         staleTime: 10 * 60 * 1000,
