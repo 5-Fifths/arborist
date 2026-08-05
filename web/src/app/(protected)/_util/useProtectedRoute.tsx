@@ -18,9 +18,11 @@ export function useProtectedRoute({user, loading}: protectedRouteProps) {
     // Ensure that the user has a Firebase Doc
     useQuery({
         queryKey: ['userDoc', user?.uid],
-        queryFn: async () => ensureUserDocExists(user!),
+        queryFn: async () => {
+            return await ensureUserDocExists(user!);
+        },
         enabled: !!user && !loading,
-        staleTime: 10 * 60 * 1000,
+        staleTime: Infinity,
     });
 
     useEffect(() => {

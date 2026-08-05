@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/providers/AuthProvider";
+import { Providers } from "@/providers/Providers";
 
 import type { Metadata } from "next";
 import { Noto_Serif, Be_Vietnam_Pro, DM_Mono } from "next/font/google";
@@ -36,9 +36,11 @@ export default function RootLayout({
       lang="en"
       className={`${NotoSerif.variable} ${BeVietnamPro.variable} ${DMMono.variable} h-full antialiased`}
     >
-      <AuthProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
-      </AuthProvider>
+        <body className="min-h-full flex flex-col">
+          <Providers>
+            {children}
+          </Providers>  
+        </body>
     </html>
   );
 }
