@@ -19,10 +19,10 @@ export function useProtectedRoute({user, loading}: protectedRouteProps) {
     useQuery({
         queryKey: ['userDoc', user?.uid],
         queryFn: async () => {
-            return ensureUserDocExists(user!);
+            return await ensureUserDocExists(user!);
         },
         enabled: !!user && !loading,
-        staleTime: 10 * 60 * 1000,
+        staleTime: Infinity,
     });
 
     useEffect(() => {
