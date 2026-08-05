@@ -36,9 +36,11 @@ export default function RootLayout({
       lang="en"
       className={`${NotoSerif.variable} ${BeVietnamPro.variable} ${DMMono.variable} h-full antialiased`}
     >
-      <AuthProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
-      </AuthProvider>
+        <body className="min-h-full flex flex-col">
+          <AuthProvider>     
+            {children}
+          </AuthProvider>
+        </body>
     </html>
   );
 }

@@ -32,7 +32,7 @@ export function AuthProvider({
 
         // Clean up listener
         return unsubscribe;
-    })
+    }, []);
 
     return (
         <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>
