@@ -14,9 +14,13 @@ export default async function ensureUserDocExists(user: User) {
     const userRef = doc(db, "users", user.uid);
     const snap = await getDoc(userRef);
 
+    let creationSuccess = false;
+
     if (!snap.exists()) {
-        await createUserDoc(user.uid);
+        creationSuccess = (await createUserDoc(user.uid)).success;
     }
 
-    sessionStorage.setItem(key, "true");
+    sessionStorage.setItem(key, creationSuccess ? "true" : "false");
+    
+    return creationSuccess;
 }
