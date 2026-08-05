@@ -8,7 +8,7 @@ export default async function ensureUserDocExists(user: User) {
     const key = `userDocExists-${user.uid}`;
 
     if (sessionStorage.getItem(key) === "true") {
-        return;
+        return true;
     }
 
     const userRef = doc(db, "users", user.uid);
