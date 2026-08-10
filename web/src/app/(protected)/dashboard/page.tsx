@@ -6,10 +6,10 @@ import { useProtectedRoute } from "../_util/useProtectedRoute";
 import { Task, Project } from "@/types/WorkItem";
 import { uploadWorkItem } from "@/firebase/uploadWorkItem";
 
-import WorkItemCreationModal from "@/components/WorkItemCreationModal/WorkItemCreationModal";
-import DashboardSection from "@/components/DashboardSection/DashboardSection";
-import DashboardTask from "@/components/DashboardWorkItem/DashboardTask/DashboardTask";
-import DashboardProject from "@/components/DashboardWorkItem/DashboardProject/DashboardProject";
+import WorkItemCreationModal from "../WorkItemCreationModal/WorkItemCreationModal";
+import DashboardSection from "../DashboardSection/DashboardSection";
+import DashboardTask from "../DashboardWorkItem/DashboardTask/DashboardTask";
+import DashboardProject from "../DashboardWorkItem/DashboardProject/DashboardProject";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 
 import styles from "./styles.module.css";
@@ -76,7 +76,7 @@ export default function Dashboard() {
                         renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
                         onAdd={() => {
                             setModalOpen(true);
-                            setModalType("Task");;
+                            setModalType("Task");
                         }}
                     />
                 </div>
@@ -98,7 +98,7 @@ export default function Dashboard() {
                         renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project} onComplete={onComplete} />}
                         onAdd={() => {
                             setModalOpen(true);
-                            setModalType("Project");;
+                            setModalType("Project");
                         }}
                     />
                 </div>

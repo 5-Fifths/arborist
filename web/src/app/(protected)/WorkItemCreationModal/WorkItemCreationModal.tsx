@@ -3,7 +3,7 @@
 import { useState, useContext } from "react";
 import { WorkItem } from "@/types/WorkItem";
 import { AuthContext } from "@/providers/AuthProvider";
-import Tag from "../Tag/Tag";
+import Tag from "../../../components/Tag/Tag";
 
 import styles from "./styles.module.css";
 
