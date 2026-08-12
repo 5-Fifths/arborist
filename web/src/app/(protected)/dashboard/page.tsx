@@ -6,7 +6,8 @@ import { useProtectedRoute } from "../_util/useProtectedRoute";
 import { Task, Project } from "@/types/WorkItem";
 import { uploadWorkItem } from "@/firebase/uploadWorkItem";
 
-import WorkItemCreationModal from "../WorkItemCreationModal/WorkItemCreationModal";
+import Modal from "@/components/Modal/Modal";
+import WorkItemCreationForm from "../WorkItemCreationForm/WorkItemCreationForm";
 import DashboardSection from "../DashboardSection/DashboardSection";
 import DashboardTask from "../DashboardWorkItem/DashboardTask/DashboardTask";
 import DashboardProject from "../DashboardWorkItem/DashboardProject/DashboardProject";
@@ -22,6 +23,7 @@ export default function Dashboard() {
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalError, setModalError] = useState<string | undefined>(undefined)
     const [tasks, setTasks] = useState<Task[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
 
@@ -104,27 +106,35 @@ export default function Dashboard() {
                 </div>
 
                 {modalOpen && modalType ?
-                    <WorkItemCreationModal 
-                        type={modalType}
-                        onSubmit={(workItem) => {
-                            setModalOpen(false);
-                            setModalType(undefined);
-                            
-                            if (modalType === "Project") {
-                                setProjects(prev => [...prev, workItem]);
-                            }
-                            else {
-                                setTasks(prev => [...prev, workItem]);
-                            }
-
-                            uploadWorkItem(user, workItem);
-                        }}
-
+                    <Modal
                         onClose={() => {
                             setModalOpen(false);
                             setModalType(undefined);
                         }}
-                    />
+                        error={modalError}
+                    >
+                        <WorkItemCreationForm
+                            setError={setModalError}
+                            type={modalType}
+                            onClose={() => {
+                                setModalOpen(false);
+                                setModalType(undefined);
+                            }}
+                            onSubmit={(workItem) => {
+                                setModalOpen(false);
+                                setModalType(undefined);
+                                
+                                if (modalType === "Project") {
+                                    setProjects(prev => [...prev, workItem]);
+                                }
+                                else {
+                                    setTasks(prev => [...prev, workItem]);
+                                }
+
+                                uploadWorkItem(user, workItem);
+                            }}
+                        />
+                    </Modal> 
                     :
                     null
                 }
