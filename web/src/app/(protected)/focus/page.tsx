@@ -6,6 +6,13 @@ import Timer from "./Timer";
 
 import styles from "./styles.module.css";
 
+// TODO: Make a way for users to adjust the initial time
+// TODO: Add a sound to the timer finish
+// TODO: Add a listener for every 10 mins to award the user coins
+// TODO: Add conic-gradient to the timer to show how much time is left
+// TODO: Add a background to the page 
+// TODO: Add a user coins value in the top right
+
 export default function Focus() {
     const DEFAULT_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
 
@@ -16,6 +23,10 @@ export default function Focus() {
     const [initialTime, setInitialTime] = useState(DEFAULT_TIME); // So that user doesn't have to reset to x time everytime the timer ends
 
     useEffect(() => {
+        if (time === 0) {
+            stopTimer();
+        }
+
         // Cleanup on unmount
         return () => {
             stopTimer();
@@ -23,15 +34,7 @@ export default function Focus() {
     }, []);
 
     const decrementTime = () => {
-        setTime(prev => {
-            if (prev <= 1000) {
-                handleTimerEnd();
-                return 0;
-            }
-            else {
-                return prev - 1000;
-            }
-        })
+        setTime(prev => Math.max(prev - 1000, 0));
     }
 
     const handleStart = () => {
@@ -61,10 +64,6 @@ export default function Focus() {
 
         console.log("RESET");
 
-        stopTimer();
-    }
-
-    const handleTimerEnd = () => {
         stopTimer();
     }
 
