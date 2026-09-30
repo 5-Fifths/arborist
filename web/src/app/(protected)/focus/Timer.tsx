@@ -14,7 +14,8 @@ export default function Timer({
         <div className={styles.timerContainer}>
             <div className={styles.timer}>
                 <div className={styles.timerProgress}></div>
-                <p className={styles.timerText}>{minutes}m {seconds}s</p>
+                <input className={styles.timerText} value={`${minutes}m`} />
+                <input className={styles.timerText} value={`${seconds}s`} />
             </div>
         </div>
     )
