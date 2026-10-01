@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../globals";
 import { AuthResult } from "../types/AuthResult";
 
-export default async function signInUser(email: string, password: string): Promise<AuthResult> {
+export async function signInUser(email: string, password: string): Promise<AuthResult> {
     try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
 
