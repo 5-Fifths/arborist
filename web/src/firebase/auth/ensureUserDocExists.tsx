@@ -5,22 +5,12 @@ import { db } from "../globals";
 import { createUserDoc } from "./createUser";
 
 export async function ensureUserDocExists(user: User) {
-    const key = `userDocExists-${user.uid}`;
-
-    if (sessionStorage.getItem(key) === "true") {
-        return true;
-    }
-
     const userRef = doc(db, "users", user.uid);
     const snap = await getDoc(userRef);
 
-    let creationSuccess = false;
-
-    if (!snap.exists()) {
-        creationSuccess = (await createUserDoc(user.uid)).success;
+    if (snap.exists()) {
+        return true;
     }
-
-    sessionStorage.setItem(key, creationSuccess ? "true" : "false");
     
-    return creationSuccess;
+    return (await createUserDoc(user.uid)).success;
 }
