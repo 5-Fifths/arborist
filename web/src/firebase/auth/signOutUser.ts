@@ -2,26 +2,28 @@ import { FirebaseError } from "firebase/app";
 import { signOut } from "firebase/auth";
 
 import { auth } from "../globals";
+import { ApiResponse } from "../types/ApiResponse";
 
-export async function signOutUser() {
+export async function signOutUser(): Promise<ApiResponse<string>> {
     try {
         await signOut(auth);
 
         return {
-            success: true
+            success: true,
+            result: "Signed out successfully."
         }
     }
     catch (error) {
         if (error instanceof FirebaseError) {
             return {
                 success: false,
-                error: (error as { code: string }).code
+                result: error.code
             }
         }
 
         return {
             success: false,
-            error: (error as string)
+            result: (error as string)
         }
     }
 }

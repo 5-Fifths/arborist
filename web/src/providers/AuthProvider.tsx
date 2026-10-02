@@ -3,16 +3,15 @@
 import { 
     createContext, 
     useState,
-    useEffect
+    useEffect,
+    useMemo
 } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/firebase/globals";
 
 export const AuthContext = createContext({ 
     user: null as User | null,
-    setUser: (value: User | null) => {},
     loading: true,
-    setLoading: (value: boolean) => {}
 });
 
 export function AuthProvider({
@@ -23,8 +22,8 @@ export function AuthProvider({
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
-    // Add a listener for user state
     useEffect(() => {
+        // Add a listener for user state
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
             setLoading(false);
@@ -34,8 +33,13 @@ export function AuthProvider({
         return unsubscribe;
     }, []);
 
+    const value = useMemo(() => ({
+        user,
+        loading
+    }), [user, loading]);
+
     return (
-        <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );
