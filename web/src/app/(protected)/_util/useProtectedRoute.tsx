@@ -1,34 +1,22 @@
 'use client';
 
-import { User } from 'firebase/auth';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from '@/providers/AuthProvider';
 
-import ensureUserDocExists from '@/firebase/auth/ensureUserDocExists'; 
-
-interface protectedRouteProps {
-    user: User | null,
-    loading: boolean
-}
-
-export function useProtectedRoute({user, loading}: protectedRouteProps) {
+// Ensure that the user is logged in
+export function useProtectedRoute() {
+    const { user, loading } = useContext(AuthContext);
     const router = useRouter();
 
-    // Ensure that the user has a Firebase Doc
-    useQuery({
-        queryKey: ['userDoc', user?.uid],
-        queryFn: async () => {
-            return await ensureUserDocExists(user!);
-        },
-        enabled: !!user && !loading,
-        staleTime: Infinity,
-    });
-
     useEffect(() => {
-        // Ensure that there is a Firebase Auth user
         if (!loading && !user) {
             router.push("/login");
         }
     }, [user, loading, router]);
+
+    return {
+        user,
+        isLoading: !user && loading,
+    }
 }
