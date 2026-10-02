@@ -1,8 +1,8 @@
 'use client';
 
-import { useContext, useState } from "react";
-import { AuthContext } from "@/providers/AuthProvider"
+import { useState } from "react";
 import { useProtectedRoute } from "../_util/useProtectedRoute";
+import { useUserRef } from "../_util/useUserRef";
 import { Task, Project } from "@/types/WorkItem";
 import { uploadWorkItem } from "@/firebase/uploadWorkItem";
 
@@ -16,10 +16,17 @@ import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import styles from "./styles.module.css";
 
 export default function Dashboard() {
-    const { user, loading } = useContext(AuthContext);
+    const { 
+        user, 
+        isLoading: authLoading 
+    } = useProtectedRoute();
 
-    // Redirect the user if they are not logged in
-    useProtectedRoute({user, loading});
+    const { 
+        userRef,
+        isLoading: refLoading, 
+        isError, 
+        error 
+    } = useUserRef();
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +34,7 @@ export default function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
 
+    // Format date string
     const date = new Date(Date.now()).toLocaleDateString(
         undefined, 
         {
@@ -37,6 +45,7 @@ export default function Dashboard() {
         }
     ).replace(/,/g, ' ּּּ· ');
 
+    // Handle task completion toggling
     const onComplete = (id: string, type: "Project" | "Task") => {
         if (type === "Project") {
             setProjects(prev =>
@@ -58,7 +67,8 @@ export default function Dashboard() {
         }
     };
 
-    if (!user || loading) {
+    // Prevent flash of content before user is initialized
+    if (!user || authLoading || refLoading) {
         return (
             <LoadingScreen />
         )
@@ -71,39 +81,33 @@ export default function Dashboard() {
                 <p className={styles.welcomeMessage}>{user.displayName ? `${user.displayName}'s ` : ''}Dashboard</p>
             </div>
             <div className={styles.mainContainer}>
-                <div style={{"flex": 4, "minWidth": 0}}>
-                    <DashboardSection
-                        title={"TODAY'S TASKS"}
-                        workItems={tasks}
-                        renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
-                        onAdd={() => {
-                            setModalOpen(true);
-                            setModalType("Task");
-                        }}
-                    />
-                </div>
-                <div style={{"flex": 3, "minWidth": 0}}>
-                    <DashboardSection 
-                        title={"URGENT TASKS"}
-                        workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
-                        renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
-                        onAdd={() => {
-                            setModalOpen(true);
-                            setModalType("Urgent Task");
-                        }}
-                    />
-                </div>
-                <div style={{"flex": 3, "minWidth": 0}}>
-                    <DashboardSection 
-                        title={"URGENT PROJECTS"}
-                        workItems={projects}
-                        renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project} onComplete={onComplete} />}
-                        onAdd={() => {
-                            setModalOpen(true);
-                            setModalType("Project");
-                        }}
-                    />
-                </div>
+                <DashboardSection
+                    title={"TODAY'S TASKS"}
+                    workItems={tasks}
+                    renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
+                    onAdd={() => {
+                        setModalOpen(true);
+                        setModalType("Task");
+                    }}
+                />
+                <DashboardSection 
+                    title={"URGENT TASKS"}
+                    workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
+                    renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
+                    onAdd={() => {
+                        setModalOpen(true);
+                        setModalType("Urgent Task");
+                    }}
+                />
+                <DashboardSection 
+                    title={"URGENT PROJECTS"}
+                    workItems={projects}
+                    renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project} onComplete={onComplete} />}
+                    onAdd={() => {
+                        setModalOpen(true);
+                        setModalType("Project");
+                    }}
+                />
 
                 {modalOpen && modalType ?
                     <Modal
