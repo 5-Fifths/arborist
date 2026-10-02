@@ -12,6 +12,7 @@ import DashboardSection from "../DashboardSection/DashboardSection";
 import DashboardTask from "../DashboardWorkItem/DashboardTask/DashboardTask";
 import DashboardProject from "../DashboardWorkItem/DashboardProject/DashboardProject";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
+import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
 
 import styles from "./styles.module.css";
 
@@ -71,6 +72,13 @@ export default function Dashboard() {
     if (!user || authLoading || refLoading) {
         return (
             <LoadingScreen />
+        )
+    }
+
+    // Handle error while fetching user doc
+    if (isError) {
+        return (
+            <ErrorScreen error={error} />
         )
     }
 

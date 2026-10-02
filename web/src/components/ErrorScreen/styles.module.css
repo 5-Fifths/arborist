@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+    width: 100%;
+}
+
+.title {
+    font-family: var(--font-dm-mono);
+    font-size: 35pt;
+}
+
+.message {
+    font-family: var(--font-be-vietnam-pro);
+    margin-bottom: 30px;
+}

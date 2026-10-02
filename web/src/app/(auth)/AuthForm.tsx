@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FormType } from "./FormType";
 import { parseExpectedError } from "@/firebase/parseExpectedError";
 import { createUser } from "@/firebase/auth/createUser";
-import { ensureUserDocExists } from "@/firebase/auth/ensureUserDocExists";
 import { signInUser } from "@/firebase/auth/signInUser";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
@@ -58,16 +57,9 @@ export function AuthForm({ formType }: AuthFormProps) {
             const user = await authAction(email, password);
          
             if (!user.success) {
-                const parsedError = parseExpectedError(user.error);
+                const parsedError = parseExpectedError(user.result);
 
                 throw new Error(parsedError);
-            }
-
-            // Try to create the user doc again in event of Firestore failure
-            const docExists = await ensureUserDocExists(user.user);
-
-            if (!docExists) {
-                throw new Error("User doc could not be created.");
             }
 
             setLoading(false);
@@ -81,7 +73,7 @@ export function AuthForm({ formType }: AuthFormProps) {
                 setError((err as Error).message);
             }
             else {
-                setError("An unexpected error caused your profile to be partially uninitialized. Please try logging in again.");
+                setError("An unexpected error occurred. Please try again later.");
             }
         }
     }
