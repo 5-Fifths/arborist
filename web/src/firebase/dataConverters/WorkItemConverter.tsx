@@ -7,7 +7,6 @@ import {
 
 interface WorkItemDbModel {
     // Identifying information
-    user_id: string,
     item_type: "Project" | "Task",
 
     // Item data
@@ -29,7 +28,6 @@ export const WorkItemConverter = {
             })) ?? [];
             
             return {
-                user_id: WorkItem.user_id,
                 item_type: WorkItem.item_type,
     
                 title: WorkItem.title,
@@ -50,7 +48,6 @@ export const WorkItemConverter = {
     
             return {
                 item_id: snapshot.id,
-                user_id: data.user_id,
                 item_type: data.item_type,
     
                 title: data.title,
