@@ -4,9 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserDocRef } from '@/firebase/doc/getUserDocRef';
 import { createUserDoc } from '@/firebase/doc/createUserDoc';
 import { AuthContext } from "@/providers/AuthProvider";
+import { parseExpectedError } from "@/firebase/parseExpectedError";
 
-// Custom hook to get the user's document reference from Firebase
-export function useUserRef() {
+// Get the user's document reference
+    // We don't expect it to ever change, so we can cache it indefinitely
+export function useUserRefPath() {
     const { user, loading: authLoading } = useContext(AuthContext);
 
     const {
@@ -22,13 +24,14 @@ export function useUserRef() {
 
             const response = await getUserDocRef(user.uid);
 
-            // Ensure that the user has a Firebase Doc
             if (!response.success) {
-                return (await createUserDoc(user.uid)).result;
+                const parsedError = parseExpectedError(response.result);
+
+                throw new Error(parsedError);
             }
 
-            // Return the doc ref
-            return response.result;
+            // Return the doc ref path
+            return response.result.path;
         },
         enabled: Boolean(user?.uid) && !authLoading,
         staleTime: Infinity,
@@ -36,7 +39,7 @@ export function useUserRef() {
     });
 
     return {
-        userRef: data,
+        userRefPath: data,
         isLoading: authLoading || (Boolean(user) && isLoading),
         isError,
         error

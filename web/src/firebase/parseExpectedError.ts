@@ -15,6 +15,13 @@ export function parseExpectedError(errorCode: string) {
         case "auth/user-not-found":
         case "auth/wrong-password":
             return "Invalid email or password. Please try again.";
+
+        // User docs
+        case "permission-denied":
+            return "You do not have permission to access this resource. Please contact support if you believe this is an error.";
+        
+
+        // Other
         default:
             return errorCode;
     }

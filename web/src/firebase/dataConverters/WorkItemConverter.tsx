@@ -7,7 +7,6 @@ import {
 
 interface WorkItemDbModel {
     // Identifying information
-    item_id: string,
     user_id: string,
     item_type: "Project" | "Task",
 
@@ -22,15 +21,14 @@ interface WorkItemDbModel {
 
 export const WorkItemConverter = {
     toFirestore(WorkItem: WorkItem): WorkItemDbModel {
-            const truncatedWorkItems = WorkItem.subtasks?.map((WorkItem) => ({
-                item_id: WorkItem.item_id,
-                title: WorkItem.title,
-                complete: WorkItem.complete
-            })) ?? [];
             const tagList = WorkItem.tags ?? [];
+            const truncatedWorkItems = WorkItem.subtasks?.map((subtask) => ({
+                item_id: subtask.item_id,
+                title: subtask.title,
+                complete: subtask.complete
+            })) ?? [];
             
             return {
-                item_id: WorkItem.item_id,
                 user_id: WorkItem.user_id,
                 item_type: WorkItem.item_type,
     
@@ -51,13 +49,13 @@ export const WorkItemConverter = {
             const data = snapshot.data(options) as WorkItemDbModel;
     
             return {
-                item_id: data.item_id,
+                item_id: snapshot.id,
                 user_id: data.user_id,
                 item_type: data.item_type,
     
                 title: data.title,
                 description: data.description,
-                due_date: data.due_date.toDate(),
+                due_date: data.due_date?.toDate() ?? new Date(),
                 complete: data.complete,
                 subtasks: data.truncated_tasks,
                 tags: data.tags
