@@ -8,8 +8,7 @@ export async function createUserDoc(uid: string): Promise<ApiResponse<DocumentRe
         const initialData = {
             creation_date: serverTimestamp(),
             last_updated: serverTimestamp(),
-            coins: 0,
-            canvasToken: ""
+            coins: 0
         }
 
         await setDoc(
