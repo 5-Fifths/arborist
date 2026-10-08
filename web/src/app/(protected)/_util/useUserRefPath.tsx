@@ -1,7 +1,5 @@
 import { useContext } from "react";
-import { doc } from "firebase/firestore";
 
-import { db } from "@/firebase/globals";
 import { AuthContext } from "@/providers/AuthProvider";
 
 // Get the user's document reference
@@ -12,7 +10,7 @@ export function useUserRefPath() {
 
     return {
         userRefPath: user ? `users/${user.uid}` : undefined,
-        isLoading: !authLoading,
+        isLoading: authLoading,
         isError: !user && !authLoading,
         error: !user && !authLoading ? new Error("User is not logged in.") : null
     }

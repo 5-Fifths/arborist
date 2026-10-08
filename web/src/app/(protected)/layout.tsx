@@ -14,7 +14,11 @@ export default function DashboardLayout({
     const { isLoading } = useProtectedRoute(); 
 
     if (isLoading) {
-        return <LoadingScreen />;
+        return (
+            <div className={styles.container}>
+                <LoadingScreen />;
+            </div>
+        )
     }
 
     return (

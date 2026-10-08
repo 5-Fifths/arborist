@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WorkItemConverter } from "@/firebase/dataConverters/WorkItemConverter";
 import { db } from "@/firebase/globals";
 
-export function useWorkItems(userRefPath: string) {
+export function useWorkItems(userRefPath: string | undefined) {
     const {
         data,
         isLoading,
@@ -13,6 +13,8 @@ export function useWorkItems(userRefPath: string) {
     } = useQuery({
         queryKey: ['workItems', userRefPath],
         queryFn: async () => {
+            if (!userRefPath) throw new Error("User reference path is undefined.");
+
             const projectsRef = collection(db, userRefPath, "projects").withConverter(WorkItemConverter);
             const tasksRef = collection(db, userRefPath, "tasks").withConverter(WorkItemConverter);
 
@@ -26,7 +28,6 @@ export function useWorkItems(userRefPath: string) {
                 tasks: tasksSnapshot.docs.map(doc => doc.data())
             }
         },
-
         enabled: Boolean(userRefPath),
         
         // Keep in memory for an hour; User uses sync button to get latest data if they need it now

@@ -8,35 +8,45 @@ import {
 interface WorkItemDbModel {
     // Identifying information
     item_type: "Project" | "Task",
+    item_id: string,
 
     // Item data
     title: string,
     description: string,
     due_date: Timestamp,
     complete: boolean,
-    truncated_tasks: TruncatedTask[],
+    subtasks?: TruncatedTask[],
     tags: string[]
 }
 
 export const WorkItemConverter = {
-    toFirestore(WorkItem: WorkItem): WorkItemDbModel {
-            const tagList = WorkItem.tags ?? [];
-            const truncatedWorkItems = WorkItem.subtasks?.map((subtask) => ({
+    toFirestore(workItem: WorkItem): WorkItemDbModel {
+            const truncatedWorkItems = workItem.subtasks?.map((subtask) => ({
                 item_id: subtask.item_id,
                 title: subtask.title,
                 complete: subtask.complete
             })) ?? [];
-            
-            return {
-                item_type: WorkItem.item_type,
+
+            const date = workItem.due_date instanceof Date ? 
+                Timestamp.fromDate(workItem.due_date) :
+                Timestamp.fromDate(new Date(workItem.due_date));
+
+            const result: WorkItemDbModel = {
+                item_type: workItem.item_type,
+                item_id: workItem.item_id,
     
-                title: WorkItem.title,
-                description: WorkItem.description,
-                due_date: Timestamp.fromDate(WorkItem.due_date),
-                complete: WorkItem.complete,
-                truncated_tasks: truncatedWorkItems,
-                tags: tagList
+                title: workItem.title,
+                description: workItem.description,
+                due_date: date,
+                complete: workItem.complete,
+                tags: workItem.tags ?? []
             }
+
+            if (workItem.item_type === "Project") {
+                result.subtasks = truncatedWorkItems;
+            }
+
+            return result;
         },
         
         // Cast as either a project or a task after
@@ -54,7 +64,7 @@ export const WorkItemConverter = {
                 description: data.description,
                 due_date: data.due_date?.toDate() ?? new Date(),
                 complete: data.complete,
-                subtasks: data.truncated_tasks,
+                subtasks: data.item_type === "Project" ? data.subtasks : undefined,
                 tags: data.tags
             }
         }

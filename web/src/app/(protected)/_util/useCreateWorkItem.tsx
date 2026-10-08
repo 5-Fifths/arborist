@@ -15,7 +15,8 @@ export function useCreateWorkItem() {
 
     const createItem = useMutation({
         mutationFn: async (newItem: WorkItem) => {
-            if (!userRefPath) throw error;
+            if (error !== null) throw error;
+            if (!userRefPath) throw new Error("User reference path is not defined.");
 
             await createWorkItemDoc(userRefPath, newItem);
         },
@@ -28,14 +29,15 @@ export function useCreateWorkItem() {
 
             // Add item to cache
             await queryClient.setQueryData<WorkItemCache>(['workItems', userRefPath], (oldCache) => {
+                const isProject = newItem.item_type === "Project";
+
                 if (!oldCache) {
                     return {
-                        projects: [],
-                        tasks: []
+                        projects: isProject ? [newItem] : [],
+                        tasks: isProject ? [] : [newItem]
                     }
                 }
 
-                const isProject = newItem.item_type === "Project";
                 const targetArray = isProject ? oldCache.projects : oldCache.tasks;
                 const newArray = [...targetArray, newItem];
                 
@@ -52,15 +54,26 @@ export function useCreateWorkItem() {
                 }
             })
 
-            return { oldCache };
+            return { oldCache, userRefPath };
         },
         onError: (_err, _data, context) => {
+            console.error(_err);
+            if (!context?.userRefPath) return;
+
             if (context?.oldCache)
-                queryClient.setQueryData(['workItems', userRefPath], context.oldCache);
+                queryClient.setQueryData(['workItems', context.userRefPath], context.oldCache);
+            else
+                queryClient.setQueryData(
+                    ['workItems', context.userRefPath], 
+                    {
+                        projects: [],
+                        tasks: []
+                    }
+            )
         },
         onSettled: (_data, _err, _vars, context) => {
-            if (context)
-                queryClient.invalidateQueries({queryKey: ['workItems', userRefPath]});
+            if (context?.userRefPath)
+                queryClient.invalidateQueries({queryKey: ['workItems', context.userRefPath]});
         }
     });
 

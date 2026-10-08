@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
 import { Task, Project } from "@/types/WorkItem";
-import { uploadWorkItem } from "@/firebase/uploadWorkItem";
+import { useCreateWorkItem } from "../_util/useCreateWorkItem";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../WorkItemCreationForm/WorkItemCreationForm";
@@ -30,7 +30,9 @@ export default function Dashboard() {
         isLoading: isWorkItemsLoading,
         isError: isWorkItemsError,
         error: workItemsError
-    } = useWorkItems(userRefPath ?? "");
+    } = useWorkItems(userRefPath);
+
+    const createItem = useCreateWorkItem();
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
@@ -55,7 +57,10 @@ export default function Dashboard() {
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
         return (
-            <LoadingScreen />
+            <>
+                <h2>{String(isWorkItemsLoading)}</h2>
+                <LoadingScreen />
+            </>
         )
     }
 
@@ -81,7 +86,7 @@ export default function Dashboard() {
                         setModalOpen(true);
                         setModalType("Task");
                     }}
-                />
+                />  
                 <DashboardSection 
                     title={"URGENT TASKS"}
                     workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
@@ -120,14 +125,7 @@ export default function Dashboard() {
                                 setModalOpen(false);
                                 setModalType(undefined);
                                 
-                                if (modalType === "Project") {
-                                    setProjects(prev => [...prev, workItem]);
-                                }
-                                else {
-                                    setTasks(prev => [...prev, workItem]);
-                                }
-
-                                uploadWorkItem(user, workItem);
+                                createItem.mutate(workItem);
                             }}
                         />
                     </Modal> 
