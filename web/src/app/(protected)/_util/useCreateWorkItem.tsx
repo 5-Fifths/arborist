@@ -57,7 +57,6 @@ export function useCreateWorkItem() {
             return { oldCache, userRefPath };
         },
         onError: (_err, _data, context) => {
-            console.error(_err);
             if (!context?.userRefPath) return;
 
             if (context?.oldCache)
