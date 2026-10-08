@@ -3,7 +3,6 @@ export type ItemType = "Project" | "Task";
 export interface WorkItem {
     // Identifying information
     item_id: string;
-    user_id: string;
 
     // Item data
     item_type: ItemType;

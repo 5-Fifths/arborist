@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import styles from "./styles.module.css";
 
 interface ModalProps {
@@ -12,14 +10,14 @@ interface ModalProps {
 export default function Modal({ children, error, onClose }: ModalProps) {
     return (
         <div className={styles.overlay} onClick={onClose}>
+            {error ? 
+                <div className={styles.error}>
+                    {error}
+                </div>
+                :
+                null
+            }
             <div className={styles.container} onClick={(e) => e.stopPropagation()}>
-                {error ? 
-                    <div className={styles.error}>
-                        {error}
-                    </div>
-                    :
-                    null
-                }
                 {children}
             </div>
         </div>

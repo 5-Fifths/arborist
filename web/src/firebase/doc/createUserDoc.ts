@@ -1,16 +1,14 @@
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, DocumentReference } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
 import { db } from "../globals";
+import { ApiResponse } from "../types/ApiResponse";
 
-export async function createUserDoc(uid: string) {
+export async function createUserDoc(uid: string): Promise<ApiResponse<DocumentReference>> {
     try {
         const initialData = {
             creation_date: serverTimestamp(),
             last_updated: serverTimestamp(),
-            tasks: [],
-            projects: [],
-            // coins: 0,
-            // plants: {}
+            coins: 0
         }
 
         await setDoc(

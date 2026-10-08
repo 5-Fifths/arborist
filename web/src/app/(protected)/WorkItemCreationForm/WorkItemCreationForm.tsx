@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useContext } from "react";
+import { useState } from "react";
+
 import { WorkItem } from "@/types/WorkItem";
-import { AuthContext } from "@/providers/AuthProvider";
 import Tag from "../../../components/Tag/Tag";
 
 import styles from "./styles.module.css";
@@ -20,7 +20,6 @@ export default function WorkItemCreationModal({
     onClose,
     setError
 }: WorkItemCreationModalProps) {   
-    const { user, loading } = useContext(AuthContext);
 
     const [currentTag, setCurrentTag] = useState<string>("");
     const [tags, setTags] = useState(type !== "Task" ? ["Urgent"] : []);
@@ -52,38 +51,27 @@ export default function WorkItemCreationModal({
     }
 
     function createWorkItem(formData: FormData) {
-        const uid = user?.uid;
         const itemType = type === "Project" ? "Project" : "Task";
 
-        if (!uid) {
-            setError("User ID cannot be found.");
-
-            return undefined;
-        }
-
         const workItem: WorkItem = {
-            user_id: uid,
             item_id: crypto.randomUUID(),
             
             item_type: itemType,
             title: formData.get("title") as string,
             description: formData.get("description") as string ?? "",
             due_date: new Date(formData.get("due_date") as string),
-            tags: tags ?? undefined,
+            tags: tags ?? [],
             complete: false
         }
 
         return workItem;
     }
 
-    if (!loading && !user) {
-        // TODO: Display loading; and start timer?
-    }
 
     return (
         <>
             <div className={styles.header}>Create a New {type}</div>
-            <form 
+            <form
                 className={styles.form}
                 onSubmit={(e) => {
                     e.preventDefault();

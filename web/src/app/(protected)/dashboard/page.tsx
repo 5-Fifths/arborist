@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from "react";
-import { useProtectedRoute } from "../_util/useProtectedRoute";
-import { useUserRef } from "../_util/useUserRef";
+import { useState, useMemo } from "react";
+import { useUserRefPath } from "../_util/useUserRefPath";
+import { useWorkItems } from "../_util/useWorkItems";
 import { Task, Project } from "@/types/WorkItem";
-import { uploadWorkItem } from "@/firebase/uploadWorkItem";
+import { useCreateWorkItem } from "../_util/useCreateWorkItem";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../WorkItemCreationForm/WorkItemCreationForm";
@@ -18,67 +18,56 @@ import styles from "./styles.module.css";
 
 export default function Dashboard() {
     const { 
-        user, 
-        isLoading: authLoading 
-    } = useProtectedRoute();
+        userRefPath,
+        isLoading: isRefLoading,
+        isError: isRefError,
+        error: refError
+    } = useUserRefPath();
 
-    const { 
-        userRef,
-        isLoading: refLoading, 
-        isError, 
-        error 
-    } = useUserRef();
+    const {
+        projects,
+        tasks,
+        isLoading: isWorkItemsLoading,
+        isError: isWorkItemsError,
+        error: workItemsError
+    } = useWorkItems(userRefPath);
+
+    const createItem = useCreateWorkItem();
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalError, setModalError] = useState<string | undefined>(undefined)
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
+
+    // Handle completion of a work item
+    const onComplete = () => {}
 
     // Format date string
-    const date = new Date(Date.now()).toLocaleDateString(
-        undefined, 
-        {
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric'
-        }
-    ).replace(/,/g, ' ּּּ· ');
-
-    // Handle task completion toggling
-    const onComplete = (id: string, type: "Project" | "Task") => {
-        if (type === "Project") {
-            setProjects(prev =>
-                prev.map(project =>
-                    project.item_id === id ?
-                    { ...project, complete: !project.complete }
-                    : project
-                )
-            );
-        }
-        else {
-            setTasks(prev =>
-                prev.map(task =>
-                    task.item_id === id ? 
-                    { ...task, complete: !task.complete }
-                    : task
-                )
-            );
-        }
-    };
+    const date = useMemo(() => { 
+        return new Date(Date.now()).toLocaleDateString(
+            undefined, 
+            {
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            }
+        ).replace(/,/g, ' ּּּ· ');
+    }, []);
 
     // Prevent flash of content before user is initialized
-    if (!user || authLoading || refLoading) {
+    if (isRefLoading || isWorkItemsLoading) {
         return (
-            <LoadingScreen />
+            <>
+                <h2>{String(isWorkItemsLoading)}</h2>
+                <LoadingScreen />
+            </>
         )
     }
 
     // Handle error while fetching user doc
-    if (isError) {
+    if (isRefError || isWorkItemsError) {
         return (
-            <ErrorScreen error={error} />
+            <ErrorScreen error={refError || workItemsError} />
         )
     }
 
@@ -86,7 +75,7 @@ export default function Dashboard() {
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{date}</p>
-                <p className={styles.welcomeMessage}>{user.displayName ? `${user.displayName}'s ` : ''}Dashboard</p>
+                <p className={styles.welcomeMessage}>Dashboard</p>
             </div>
             <div className={styles.mainContainer}>
                 <DashboardSection
@@ -97,7 +86,7 @@ export default function Dashboard() {
                         setModalOpen(true);
                         setModalType("Task");
                     }}
-                />
+                />  
                 <DashboardSection 
                     title={"URGENT TASKS"}
                     workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
@@ -122,7 +111,7 @@ export default function Dashboard() {
                         onClose={() => {
                             setModalOpen(false);
                             setModalType(undefined);
-                        }}
+                        }}  
                         error={modalError}
                     >
                         <WorkItemCreationForm
@@ -136,14 +125,7 @@ export default function Dashboard() {
                                 setModalOpen(false);
                                 setModalType(undefined);
                                 
-                                if (modalType === "Project") {
-                                    setProjects(prev => [...prev, workItem]);
-                                }
-                                else {
-                                    setTasks(prev => [...prev, workItem]);
-                                }
-
-                                uploadWorkItem(user, workItem);
+                                createItem.mutate(workItem);
                             }}
                         />
                     </Modal> 
