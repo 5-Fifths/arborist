@@ -1,4 +1,4 @@
-import { WorkItem, TruncatedTask } from "@/types/WorkItem";
+import { WorkItem, TruncatedTask, ItemType } from "@/types/WorkItem";
 import { 
     QueryDocumentSnapshot, 
     SnapshotOptions,
@@ -7,7 +7,7 @@ import {
 
 interface WorkItemDbModel {
     // Identifying information
-    item_type: "Project" | "Task",
+    item_type: ItemType,
     item_id: string,
 
     // Item data
@@ -56,16 +56,21 @@ export const WorkItemConverter = {
         ): WorkItem {
             const data = snapshot.data(options) as WorkItemDbModel;
     
-            return {
-                item_id: snapshot.id,
+            const result: WorkItem = {
+                item_id: data.item_id,
                 item_type: data.item_type,
     
                 title: data.title,
                 description: data.description,
                 due_date: data.due_date?.toDate() ?? new Date(),
                 complete: data.complete,
-                subtasks: data.item_type === "Project" ? data.subtasks : undefined,
                 tags: data.tags
             }
+
+            if (data.item_type === "Project") {
+                result.subtasks = data.subtasks;
+            }
+
+            return result;
         }
 }
