@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useMemo } from "react";
+import { Task, Project, WorkItem } from "@/types/WorkItem";
+import { useCreateWorkItem } from "../_util/useCreateWorkItem";
+import { useUpdateWorkItem } from "../_util/useUpdateWorkItem";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
-import { Task, Project } from "@/types/WorkItem";
-import { useCreateWorkItem } from "../_util/useCreateWorkItem";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../WorkItemCreationForm/WorkItemCreationForm";
@@ -33,13 +34,21 @@ export default function Dashboard() {
     } = useWorkItems(userRefPath);
 
     const createItem = useCreateWorkItem();
+    const updateItem = useUpdateWorkItem();
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
     const [modalError, setModalError] = useState<string | undefined>(undefined)
 
     // Handle completion of a work item
-    const onComplete = () => {}
+    const onComplete = (workItem: WorkItem) => {
+        const updatedWorkItem = {
+            ...workItem,
+            complete: !workItem.complete
+        }
+
+        updateItem.mutate(updatedWorkItem);
+    }
 
     // Format date string
     const date = useMemo(() => { 
@@ -57,10 +66,7 @@ export default function Dashboard() {
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
         return (
-            <>
-                <h2>{String(isWorkItemsLoading)}</h2>
-                <LoadingScreen />
-            </>
+            <LoadingScreen />
         )
     }
 

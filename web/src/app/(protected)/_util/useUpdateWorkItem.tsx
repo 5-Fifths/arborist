@@ -37,14 +37,14 @@ export function useUpdateWorkItem() {
                 }               
 
                return {
-                ...oldCache,
-                projects: oldCache.projects.map((item) => newData.item_id === item.item_id ? newData : item),
-                tasks: oldCache.tasks.map((item) => newData.item_id === item.item_id ? newData : item),
+                    ...oldCache,
+                    projects: oldCache.projects.map((item) => newData.item_id === item.item_id ? newData : item),
+                    tasks: oldCache.tasks.map((item) => newData.item_id === item.item_id ? newData : item),
                }
             });
 
             // Context
-            return { prevCache };
+            return { prevCache, userRefPath };
         },
         onError: (_err, _newItem, context) => {
             if (context?.prevCache) 
@@ -52,7 +52,7 @@ export function useUpdateWorkItem() {
         },
         onSettled: (_data, _err, _vars, context) => {
             if (context)
-                queryClient.invalidateQueries({queryKey: ['workItems', userRefPath]});
+                queryClient.invalidateQueries({queryKey: ['workItems', context.userRefPath]});
         }
     });
 

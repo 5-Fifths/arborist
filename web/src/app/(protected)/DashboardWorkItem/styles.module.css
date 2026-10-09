@@ -7,6 +7,7 @@
     width: 100%;
     min-width: 0;
 }
+
 .strikethrough {
     color: var(--accent);
     text-decoration: line-through black 1px;

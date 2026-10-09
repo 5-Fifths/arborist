@@ -1,7 +1,7 @@
 'use client';
 
 import { Project } from "@/types/WorkItem";
-import { useState } from "react";
+
 import Tag from "@/components/Tag/Tag";
 
 import projectStyles from "./DashboardProject.module.css";
@@ -9,7 +9,7 @@ import styles from "../styles.module.css";
 
 interface DashboardProjectProps {
     project: Project,
-    onComplete: (id: string, type: "Task" | "Project") => void
+    onComplete: (project: Project) => void
 }
 
 function countCompletedSubtasks(project: Project) {
@@ -52,11 +52,11 @@ export default function DashboardProject({ project, onComplete }: DashboardProje
             type="checkbox" 
                 className={styles.checkbox} 
                 checked={project.complete}
-                onChange={() => onComplete(project.item_id, "Project")} 
+                onChange={() => onComplete(project)} 
             />
             <div className={projectStyles.container}>
                 <div className={projectStyles.header}>
-                    <div className={`${projectStyles.title} ${project.complete ? styles.strikethrough : ''}`}>{project.title}</div>
+                    <div className={`${styles.title} ${project.complete ? styles.strikethrough : ''}`}>{project.title}</div>
                     <div className={styles.tagContainer}>
                         {firstTag ? 
                         <Tag 
