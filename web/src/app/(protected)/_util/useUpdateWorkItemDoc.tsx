@@ -9,7 +9,7 @@ interface WorkItemCache {
     tasks: WorkItem[]
 }
 
-export function useUpdateWorkItem() {
+export function useUpdateWorkItemDoc() {
     const { userRefPath, error } = useUserRefPath();
     const queryClient = useQueryClient();
 
@@ -49,10 +49,6 @@ export function useUpdateWorkItem() {
         onError: (_err, _newItem, context) => {
             if (context?.prevCache) 
                 queryClient.setQueryData(['workItems', userRefPath], context.prevCache);
-        },
-        onSettled: (_data, _err, _vars, context) => {
-            if (context)
-                queryClient.invalidateQueries({queryKey: ['workItems', context.userRefPath]});
         }
     });
 

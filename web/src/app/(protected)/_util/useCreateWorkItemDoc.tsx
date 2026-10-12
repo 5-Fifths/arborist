@@ -9,7 +9,7 @@ interface WorkItemCache {
     tasks: WorkItem[]
 }
 
-export function useCreateWorkItem() {
+export function useCreateWorkItemDoc() {
     const { userRefPath, error } = useUserRefPath();
     const queryClient = useQueryClient();
 
@@ -28,7 +28,7 @@ export function useCreateWorkItem() {
             const oldCache = queryClient.getQueryData<WorkItemCache>(['workItems', userRefPath]);
 
             // Add item to cache
-            await queryClient.setQueryData<WorkItemCache>(['workItems', userRefPath], (oldCache) => {
+            queryClient.setQueryData<WorkItemCache>(['workItems', userRefPath], (oldCache) => {
                 const isProject = newItem.item_type === "Project";
 
                 if (!oldCache) {
@@ -69,10 +69,6 @@ export function useCreateWorkItem() {
                         tasks: []
                     }
             )
-        },
-        onSettled: (_data, _err, _vars, context) => {
-            if (context?.userRefPath)
-                queryClient.invalidateQueries({queryKey: ['workItems', context.userRefPath]});
         }
     });
 
