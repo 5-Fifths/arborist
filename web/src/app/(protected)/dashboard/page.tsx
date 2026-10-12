@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { Task, Project, WorkItem } from "@/types/WorkItem";
-import { useCreateWorkItem } from "../_util/useCreateWorkItem";
-import { useUpdateWorkItem } from "../_util/useUpdateWorkItem";
+import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
+import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
 
@@ -33,8 +33,8 @@ export default function Dashboard() {
         error: workItemsError
     } = useWorkItems(userRefPath);
 
-    const createItem = useCreateWorkItem();
-    const updateItem = useUpdateWorkItem();
+    const createItem = useCreateWorkItemDoc();
+    const debouncedUpdate = useUpdateWorkItemDoc();
 
     const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
     const [modalOpen, setModalOpen] = useState(false);
@@ -42,12 +42,12 @@ export default function Dashboard() {
 
     // Handle completion of a work item
     const onComplete = (workItem: WorkItem) => {
-        const updatedWorkItem = {
+        const updatedWorkItem: WorkItem = {
             ...workItem,
             complete: !workItem.complete
         }
 
-        updateItem.mutate(updatedWorkItem);
+        debouncedUpdate(updatedWorkItem);
     }
 
     // Format date string
