@@ -18,7 +18,7 @@ export default function Sidebar() {
         <aside className={styles.container}>
             <div className={styles.logoContainer}>
                 <Image src="nurture_logo.svg" alt="" width={30} height={30} />
-                <h1 className={styles.brand}>nurture</h1>
+                <h1 className={styles.brand}>arborist</h1>
             </div>
             <nav className={styles.navWrapper}>
                 <LinkWithIcon src="/DashboardIcon.svg" href="/dashboard" link_name="Dashboard" />
