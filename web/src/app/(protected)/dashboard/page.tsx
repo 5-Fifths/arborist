@@ -63,8 +63,8 @@ export default function Dashboard() {
         ).replace(/,/g, ' ּּּ· ');
     }, []);
 
-    const filteredTasks = tasks.filter((task) => task.complete);
-    const filteredProjects = tasks.filter((project) => project.complete);
+    const filteredTasks = tasks.filter((task) => !task.complete);
+    const filteredProjects = projects.filter((project) => !project.complete);
 
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
