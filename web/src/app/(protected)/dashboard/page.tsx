@@ -8,7 +8,7 @@ import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
 
 import Modal from "@/components/Modal/Modal";
-import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
+import WorkItemCreationForm from "../../../components/WorkItemCreationForm/WorkItemCreationForm";
 import DashboardSection from "../_components/DashboardSection/DashboardSection";
 import DashboardTask from "../_components/DashboardWorkItem/DashboardTask/DashboardTask";
 import DashboardProject from "../_components/DashboardWorkItem/DashboardProject/DashboardProject";

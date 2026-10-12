@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { WorkItem } from "@/types/WorkItem";
-import Tag from "../../../components/Tag/Tag";
+import Tag from "../Tag/Tag";
 
 import styles from "./styles.module.css";
 
