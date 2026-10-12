@@ -63,6 +63,9 @@ export default function Dashboard() {
         ).replace(/,/g, ' ּּּ· ');
     }, []);
 
+    const filteredTasks = tasks.filter((task) => task.complete);
+    const filteredProjects = tasks.filter((project) => project.complete);
+
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
         return (
@@ -86,7 +89,7 @@ export default function Dashboard() {
             <div className={styles.mainContainer}>
                 <DashboardSection
                     title={"TODAY'S TASKS"}
-                    workItems={tasks}
+                    workItems={filteredTasks}
                     renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
@@ -95,7 +98,7 @@ export default function Dashboard() {
                 />  
                 <DashboardSection 
                     title={"URGENT TASKS"}
-                    workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
+                    workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
                     renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
@@ -104,7 +107,7 @@ export default function Dashboard() {
                 />
                 <DashboardSection 
                     title={"URGENT PROJECTS"}
-                    workItems={projects}
+                    workItems={filteredProjects}
                     renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
