@@ -4,7 +4,6 @@ import {
     useEffect
 } from "react";
 
-// initialTime is measured in minutes
 export function useTimer(initialDurationInMs: number) {
     const [isReset, setIsReset] = useState(true);
     const [isPaused, setIsPaused] = useState(true);
