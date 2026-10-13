@@ -2,7 +2,6 @@
     height: 350px;
     width: 350px;
     border-radius: 350px;
-    border: 7px solid var(--accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11,5 +10,15 @@
         font-size: 27pt;
         font-family: var(--font-dm-mono);
         color: black;
+    }
+
+    .textContainer {
+        height: 300px;
+        width: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 300px;
+        background-color: white;
     }
 }

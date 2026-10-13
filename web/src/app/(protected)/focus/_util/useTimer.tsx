@@ -65,13 +65,15 @@ export function useTimer(initialTime: number) {
     }
 
     useEffect(() => {
-        if (time <= 0) stopTimer();
+        setTime(initialTime);
+        setIsReset(true);
+        setIsPaused(true);
 
         // Cleanup on unmount
         return () => {
             stopTimer();
         }
-    }, []);
+    }, [initialTime]);
 
     return {
         startTimer,
