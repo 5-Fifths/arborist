@@ -6,8 +6,17 @@ import {
 
 export function useTimer(initialTime: number) {
     const [isReset, setIsReset] = useState(true);
-    const [isPaused, setIsPaused] = useState(false);
+    const [isPaused, setIsPaused] = useState(true);
     const [time, setTime] = useState(initialTime);
+    const [prevInitialTime, setPrevInitialTime] = useState(initialTime);
+
+    // Prevents a flash of the progress bar
+    if (prevInitialTime !== initialTime) {
+        setPrevInitialTime(initialTime);
+        setTime(initialTime);
+        setIsReset(true);
+        setIsPaused(true);
+    }
 
     const intervalId = useRef<ReturnType<typeof setInterval>>(null);
 
@@ -65,6 +74,7 @@ export function useTimer(initialTime: number) {
     }
 
     useEffect(() => {
+        stopTimer();
         setTime(initialTime);
         setIsReset(true);
         setIsPaused(true);

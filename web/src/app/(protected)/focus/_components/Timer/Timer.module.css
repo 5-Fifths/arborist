@@ -22,3 +22,73 @@
         background-color: white;
     }
 }
+
+.buttonSet {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: var(--font-be-vietnam-pro);
+
+    .actionButtons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+
+        .button {
+            border-radius: 100px;
+            background-color: white;
+            color: #c7cdbf;
+            border: 1px solid #c7cdbf;
+            padding: 15px 30px;
+            transition: background-color .1s, color .1s;
+        }
+
+        .button:hover {
+            background-color: var(--accent);
+            border: 1px solid white;
+            color: white; 
+        }
+
+        .active {
+            background-color: var(--accent);
+            border: 1px solid white;
+            color: white;
+        }
+    }
+
+    .timeButtons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        font-family: var(--font-dm-mono);
+
+        .label {
+            margin-right: 10px;
+            font-size: 13pt;
+            color: black;
+        }
+
+        .button {
+            font-size: 11pt;
+            border-radius: 100px;
+            background-color: white;
+            color: #c7cdbf;
+            border: 1px solid #c7cdbf;
+            padding: 15px;
+            transition: background-color .1s, color .1s
+        }
+
+        .button:hover {
+            background-color: var(--accent);
+            color: white; 
+        }
+
+        .active {
+            background-color: var(--accent);
+            border: 1px solid white;
+            color: white;
+        }
+    }
+}
