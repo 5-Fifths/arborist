@@ -6,5 +6,5 @@
 
 .button:hover {
     cursor: pointer;
-    background-color: #c7cdbf;
+    background-color: var(--neutral);
 }

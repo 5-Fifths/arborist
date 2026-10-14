@@ -27,7 +27,7 @@
 }
 
 .progressBarContainer {
-    background-color: #c7cdbf;
+    background-color: var(--neutral);
     height: 10px;
     border-radius: 10px;
     position: relative;

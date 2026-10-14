@@ -10,7 +10,7 @@
 }
 
 .link:hover {
-    background-color: #C7CDBF;
+    background-color: var(--neutral);
 }
 
 .active {
