@@ -6,6 +6,7 @@ import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
 import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
+import { useRefreshCache } from "../_util/useRefreshCache";
 import { useDate } from "../_util/useDate";
 
 import Modal from "@/components/Modal/Modal";
@@ -33,6 +34,8 @@ export default function Dashboard() {
         isError: isWorkItemsError,
         error: workItemsError
     } = useWorkItems(userRefPath);
+
+    const refreshCache = useRefreshCache();
 
     const createItem = useCreateWorkItemDoc();
     const debouncedUpdate = useUpdateWorkItemDoc();
@@ -79,7 +82,13 @@ export default function Dashboard() {
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{formattedDate}</p>
-                <p className={styles.welcomeMessage}>Dashboard</p>
+                <div className={styles.horizontal}>
+                    <p className={styles.pageTitle}>Dashboard</p>
+                    <button className={styles.refreshButton}>
+                        <img src="/RefreshIcon.svg" alt="Refresh" className={styles.refreshImage} />
+                    </button>
+                </div>
+                
             </div>
             <div className={styles.mainContainer}>
                 <ListContainer
