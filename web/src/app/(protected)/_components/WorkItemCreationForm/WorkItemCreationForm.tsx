@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { WorkItem } from "@/types/WorkItem";
-import Tag from "../../../components/Tag/Tag";
+import Tag from "@/components/Tag/Tag";
 
 import styles from "./styles.module.css";
 
@@ -20,7 +20,6 @@ export default function WorkItemCreationModal({
     onClose,
     setError
 }: WorkItemCreationModalProps) {   
-
     const [currentTag, setCurrentTag] = useState<string>("");
     const [tags, setTags] = useState(type !== "Task" ? ["Urgent"] : []);
 

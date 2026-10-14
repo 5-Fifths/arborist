@@ -10,7 +10,7 @@ import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
 import ClosedEyeIcon from "@/assets/icons/ClosedEyeIcon.svg";
 import ToggleButtonWithIcon from "@/components/ToggleButtonWithIcon/ToggleButtonWithIcon";
 import Link from "next/link";
-import styles from "./styles.module.css";
+import styles from "./AuthForm.module.css";
 
 interface AuthFormProps {
     formType: FormType;

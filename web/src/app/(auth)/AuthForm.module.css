@@ -7,12 +7,12 @@
 
     .label {
         font-size: 12pt;
-        color: var(--primary);
+        color: black;
     }
 
     .input {
-        background-color: var(--primary-neutral);
-        border-bottom: 2px solid var(--secondary-neutral);
+        background-color: var(--neutral);
+        border-bottom: 2px solid var(--neutral);
         padding: 10px;
         border-radius: 4px;
         transition: .3s border-color;
@@ -27,7 +27,7 @@
 
     .button {
         background-color: var(--accent);
-        color: var(--neutral);
+        color: white;
         height: 50px;
         border-radius: 25px;
         margin: 15px 0px;
@@ -71,7 +71,7 @@
 }
 
 .black {
-    color: var(--primary);
+    color: black;
 }
 
 .errorContainer {
