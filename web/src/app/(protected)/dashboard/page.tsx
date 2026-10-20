@@ -11,8 +11,8 @@ import { useRefreshCache } from "../_util/useRefreshCache";
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
 import DashboardSection from "../_components/DashboardSection/DashboardSection";
-import DashboardTask from "../_components/DashboardWorkItem/DashboardTask/DashboardTask";
-import DashboardProject from "../_components/DashboardWorkItem/DashboardProject/DashboardProject";
+import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
+import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
@@ -107,8 +107,8 @@ export default function Dashboard() {
             <div className={styles.mainContainer}>
                 <DashboardSection
                     title={"TODAY'S TASKS"}
-                    workItems={tasks}
-                    renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
+                    workItems={filteredTasks}
+                    renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Task");
@@ -116,8 +116,8 @@ export default function Dashboard() {
                 />  
                 <DashboardSection 
                     title={"URGENT TASKS"}
-                    workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
-                    renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
+                    workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
+                    renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Urgent Task");
@@ -125,8 +125,8 @@ export default function Dashboard() {
                 />
                 <DashboardSection 
                     title={"URGENT PROJECTS"}
-                    workItems={projects}
-                    renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project} onComplete={onComplete} />}
+                    workItems={filteredProjects}
+                    renderItem={(project: Project) => <ProjectListItem key={project.item_id} project={project} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Project");
