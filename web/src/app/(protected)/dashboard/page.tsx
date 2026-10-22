@@ -6,10 +6,11 @@ import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
 import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
+import { useDate } from "../_util/useDate";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
-import DashboardSection from "../_components/DashboardSection/DashboardSection";
+import ListContainer from "../_components/ListContainer/ListContainer";
 import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
 import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
@@ -51,20 +52,14 @@ export default function Dashboard() {
     }
 
     // Format date string
-    const date = useMemo(() => { 
-        return new Date(Date.now()).toLocaleDateString(
-            undefined, 
-            {
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            }
-        ).replace(/,/g, ' ּּּ· ');
-    }, []);
+    const { formattedDate } = useDate();
 
-    const filteredTasks = tasks.filter((task) => !task.complete);
-    const filteredProjects = projects.filter((project) => !project.complete);
+    const filteredTasks = useMemo(() => {
+        return tasks.filter((task) => !task.complete);
+    }, [tasks]);
+    const filteredProjects = useMemo(() => {
+        return projects.filter((project) => !project.complete);
+    }, [projects]);
 
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
@@ -83,11 +78,11 @@ export default function Dashboard() {
     return (
         <main className={styles.container}>
             <div className={styles.headerContainer}>
-                <p className={styles.date}>{date}</p>
+                <p className={styles.date}>{formattedDate}</p>
                 <p className={styles.welcomeMessage}>Dashboard</p>
             </div>
             <div className={styles.mainContainer}>
-                <DashboardSection
+                <ListContainer
                     title={"TODAY'S TASKS"}
                     workItems={filteredTasks}
                     renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
@@ -96,7 +91,7 @@ export default function Dashboard() {
                         setModalType("Task");
                     }}
                 />  
-                <DashboardSection 
+                <ListContainer 
                     title={"URGENT TASKS"}
                     workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
                     renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
@@ -105,7 +100,7 @@ export default function Dashboard() {
                         setModalType("Urgent Task");
                     }}
                 />
-                <DashboardSection 
+                <ListContainer 
                     title={"URGENT PROJECTS"}
                     workItems={filteredProjects}
                     renderItem={(project: Project) => <ProjectListItem key={project.item_id} project={project} onComplete={onComplete} />}

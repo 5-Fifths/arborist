@@ -2,19 +2,19 @@ import { WorkItem } from "@/types/WorkItem";
 
 import styles from "./styles.module.css";
 
-interface DashboardSectionProps<T extends WorkItem> {
+interface ListContainerProps<T extends WorkItem> {
     title: string,
     workItems: T[],
     renderItem: (item: T) => React.ReactNode,
     onAdd: () => void
 }
 
-export default function DashboardSection<T extends WorkItem>({
+export default function ListContainer<T extends WorkItem>({
     title, 
     workItems, 
     renderItem,
     onAdd
-}: DashboardSectionProps<T>) { 
+}: ListContainerProps<T>) { 
     return (
         <section className={styles.container}>
             <div className={styles.sectionTitle}>
