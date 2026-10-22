@@ -15,6 +15,8 @@ import DashboardTask from "../_components/DashboardWorkItem/DashboardTask/Dashbo
 import DashboardProject from "../_components/DashboardWorkItem/DashboardProject/DashboardProject";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
+import ProgressBar from "@/components/ProgressBar/ProgressBar";
+import RefreshIcon from "@/assets/icons/RefreshIcon.svg";
 
 import styles from "./styles.module.css";
 
@@ -34,7 +36,10 @@ export default function Dashboard() {
         error: workItemsError
     } = useWorkItems(userRefPath);
 
-    const refreshCache = useRefreshCache();
+    const { 
+        refreshCache, 
+        isCooldown 
+    } = useRefreshCache();
 
     const createItem = useCreateWorkItemDoc();
     const debouncedUpdate = useUpdateWorkItemDoc();
@@ -66,9 +71,6 @@ export default function Dashboard() {
         ).replace(/,/g, ' ּּּ· ');
     }, []);
 
-    const filteredTasks = tasks.filter((task) => !task.complete);
-    const filteredProjects = projects.filter((project) => !project.complete);
-
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
         return (
@@ -87,18 +89,25 @@ export default function Dashboard() {
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{date}</p>
+                <p className={styles.pageTitle}>Dashboard</p>
                 <div className={styles.horizontal}>
-                    <p className={styles.pageTitle}>Dashboard</p>
-                    <button className={styles.refreshButton}>
-                        <img src="/RefreshIcon.svg" alt="Refresh" className={styles.refreshImage} />
+                    <ProgressBar
+                        percentageFilled={tasks.filter((task) => task.complete).length / tasks.length}  
+                    />
+                    <p className={styles.headerText}>{tasks.filter((task) => task.complete).length} of {tasks.length} complete</p>
+                    <button className={styles.refreshButton} onClick={() => refreshCache()}>
+                        <img 
+                            src={RefreshIcon.src}
+                            alt="Refresh"
+                            className={`${styles.refreshImage} ${isCooldown ? styles.animated : ''}`} 
+                        />
                     </button>
                 </div>
-                
             </div>
             <div className={styles.mainContainer}>
                 <DashboardSection
                     title={"TODAY'S TASKS"}
-                    workItems={filteredTasks}
+                    workItems={tasks}
                     renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
@@ -107,7 +116,7 @@ export default function Dashboard() {
                 />  
                 <DashboardSection 
                     title={"URGENT TASKS"}
-                    workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
+                    workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
                     renderItem={(task: Task) => <DashboardTask key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
@@ -116,7 +125,7 @@ export default function Dashboard() {
                 />
                 <DashboardSection 
                     title={"URGENT PROJECTS"}
-                    workItems={filteredProjects}
+                    workItems={projects}
                     renderItem={(project: Project) => <DashboardProject key={project.item_id} project={project} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
