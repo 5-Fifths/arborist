@@ -25,7 +25,7 @@ export default function ListContainer<T extends WorkItem>({
                 {workItems.map((item, index) => {
                     return (
                         <div key={index} className={styles.itemWrapper}>
-                            <p className={styles.number}>{index < 10 ? `0${index + 1}` : index + 1}</p>
+                            <p className={styles.number}>{index < 9 ? `0${index + 1}` : index + 1}</p>
                             {renderItem(item)}
                         </div>
                     )

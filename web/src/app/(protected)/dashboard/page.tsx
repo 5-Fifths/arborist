@@ -16,6 +16,8 @@ import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
 import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
+import ProgressBar from "@/components/ProgressBar/ProgressBar";
+import RefreshIcon from "@/assets/icons/RefreshIcon.svg";
 
 import styles from "./styles.module.css";
 
@@ -35,7 +37,10 @@ export default function Dashboard() {
         error: workItemsError
     } = useWorkItems(userRefPath);
 
-    const refreshCache = useRefreshCache();
+    const { 
+        refreshCache, 
+        isCooldown 
+    } = useRefreshCache();
 
     const createItem = useCreateWorkItemDoc();
     const debouncedUpdate = useUpdateWorkItemDoc();
@@ -83,12 +88,18 @@ export default function Dashboard() {
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{formattedDate}</p>
                 <div className={styles.horizontal}>
-                    <p className={styles.pageTitle}>Dashboard</p>
-                    <button className={styles.refreshButton}>
-                        <img src="/RefreshIcon.svg" alt="Refresh" className={styles.refreshImage} />
+                    <ProgressBar
+                        percentageFilled={tasks.filter((task) => task.complete).length / tasks.length}  
+                    />
+                    <p className={styles.headerText}>{tasks.filter((task) => task.complete).length} of {tasks.length} complete</p>
+                    <button className={styles.refreshButton} onClick={() => refreshCache()}>
+                        <img 
+                            src={RefreshIcon.src}
+                            alt="Refresh"
+                            className={`${styles.refreshImage} ${isCooldown ? styles.animated : ''}`} 
+                        />
                     </button>
                 </div>
-                
             </div>
             <div className={styles.mainContainer}>
                 <ListContainer
