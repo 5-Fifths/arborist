@@ -20,7 +20,6 @@ export default function WorkItemCreationModal({
     onClose,
     setError
 }: WorkItemCreationModalProps) {   
-
     const [currentTag, setCurrentTag] = useState<string>("");
     const [tags, setTags] = useState(type !== "Task" ? ["Urgent"] : []);
 

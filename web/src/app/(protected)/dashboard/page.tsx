@@ -6,6 +6,7 @@ import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
 import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
+import { useRefreshCache } from "../_util/useRefreshCache";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
@@ -14,6 +15,8 @@ import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
 import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
+import ProgressBar from "@/components/ProgressBar/ProgressBar";
+import RefreshIcon from "@/assets/icons/RefreshIcon.svg";
 
 import styles from "./styles.module.css";
 
@@ -32,6 +35,11 @@ export default function Dashboard() {
         isError: isWorkItemsError,
         error: workItemsError
     } = useWorkItems(userRefPath);
+
+    const { 
+        refreshCache, 
+        isCooldown 
+    } = useRefreshCache();
 
     const createItem = useCreateWorkItemDoc();
     const debouncedUpdate = useUpdateWorkItemDoc();
@@ -63,9 +71,6 @@ export default function Dashboard() {
         ).replace(/,/g, ' ּּּ· ');
     }, []);
 
-    const filteredTasks = tasks.filter((task) => !task.complete);
-    const filteredProjects = projects.filter((project) => !project.complete);
-
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
         return (
@@ -84,7 +89,20 @@ export default function Dashboard() {
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{date}</p>
-                <p className={styles.welcomeMessage}>Dashboard</p>
+                <p className={styles.pageTitle}>Dashboard</p>
+                <div className={styles.horizontal}>
+                    <ProgressBar
+                        percentageFilled={tasks.filter((task) => task.complete).length / tasks.length}  
+                    />
+                    <p className={styles.headerText}>{tasks.filter((task) => task.complete).length} of {tasks.length} complete</p>
+                    <button className={styles.refreshButton} onClick={() => refreshCache()}>
+                        <img 
+                            src={RefreshIcon.src}
+                            alt="Refresh"
+                            className={`${styles.refreshImage} ${isCooldown ? styles.animated : ''}`} 
+                        />
+                    </button>
+                </div>
             </div>
             <div className={styles.mainContainer}>
                 <DashboardSection

@@ -1,7 +1,7 @@
 import { AuthForm } from "../AuthForm";
 import { FormType } from "../FormType";
 
-import styles from "../styles.module.css";
+import styles from "../AuthForm.module.css";
 
 export default function Signup() {
     return (

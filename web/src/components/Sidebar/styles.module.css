@@ -1,5 +1,5 @@
 .container {
-    border-right: 1px solid #c7cdbf;
+    border-right: 1px solid var(--neutral);
     box-sizing: border-box;
     min-width: 300px;
     max-width: 350px;
@@ -38,7 +38,7 @@
 }
 
 .profileSection {
-    border-top: 1px solid #c7cdbf;
+    border-top: 1px solid var(--neutral);
     margin-top: auto;
     padding: 20px 10px;
     display: flex;
