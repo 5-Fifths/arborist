@@ -4,7 +4,7 @@ import { type Project } from "@/types/WorkItem";
 
 import Tag from "@/components/Tag/Tag";
 
-import projectStyles from "./Project.module.css";
+import projectStyles from "./ProjectListItem.module.css";
 import styles from "../styles.module.css";
 
 interface ProjectListItemProps {

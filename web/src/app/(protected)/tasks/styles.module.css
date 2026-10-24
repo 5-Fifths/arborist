@@ -1,3 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.mainContainer {
+    border-top: 1px solid var(--neutral);
+    padding: 0px 20px;
+    height: 100vh;
+    display: flex;
+}
+
 .headerContainer {
     display: flex;
     flex-direction: column;
@@ -14,4 +27,8 @@
         font-size: 2.5rem;
         font-weight: 600;
     }
+}
+
+.infoBar {
+    flex: 2;
 }

@@ -36,7 +36,7 @@ export default function RootLayout({
       lang="en"
       className={`${NotoSerif.variable} ${BeVietnamPro.variable} ${DMMono.variable} h-full antialiased`}
     >
-        <body className="min-h-full flex flex-col">
+        <body className="min-h-full flex flex-col overflow-hidden">
           <Providers>
             {children}
           </Providers>  
