@@ -1,0 +1,11 @@
+.container {
+    background-color: var(--neutral);
+    border-radius: 5px;
+}
+
+.title {
+    font-family: var(--font-be-vietnam-pro);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

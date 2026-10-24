@@ -1,8 +1,10 @@
 import { Project, Task } from "@/types/WorkItem";
 import { useDate } from "../../../_util/useDate";
+import { createDayArray } from "./_util/createDayArray";
+
+import CalendarDay from "../CalendarDay/CalendarDay";
 
 import styles from "./styles.module.css";
-import { createDayArray } from "./_util/createDayArray";
 
 interface CalendarProps {
     projects: Project[],
@@ -23,9 +25,16 @@ export default function Calendar({ projects, tasks }: CalendarProps) {
                 <p className={styles.month}>{month}</p>
             </div>
             <div className={styles.gridContainer}>
-                {DAYS.map((day) => <h3 className={styles.gridHeader}>{day}</h3>)}
+                {DAYS.map((day) => <h3 className={styles.gridHeader} key={day}>{day}</h3>)}
                 
-                {daysArray.map((day) => <div className={styles.cell}>{day.date}</div>)}
+                {daysArray.map((day, idx) => 
+                    <CalendarDay
+                        key={idx}
+                        date={day.date}
+                        monthOffset={day.monthOffset}
+                        workItems={tasks}
+                    />
+                )}
             </div>
         </div>
     )
