@@ -10,7 +10,7 @@ import { useRefreshCache } from "../_util/useRefreshCache";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
-import DashboardSection from "../_components/DashboardSection/DashboardSection";
+import ListContainer from "../_components/ListContainer/ListContainer";
 import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
 import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
@@ -105,27 +105,27 @@ export default function Dashboard() {
                 </div>
             </div>
             <div className={styles.mainContainer}>
-                <DashboardSection
+                <ListContainer
                     title={"TODAY'S TASKS"}
-                    workItems={filteredTasks}
+                    workItems={tasks}
                     renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Task");
                     }}
                 />  
-                <DashboardSection 
+                <ListContainer 
                     title={"URGENT TASKS"}
-                    workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
+                    workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
                     renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Urgent Task");
                     }}
                 />
-                <DashboardSection 
+                <ListContainer 
                     title={"URGENT PROJECTS"}
-                    workItems={filteredProjects}
+                    workItems={projects}
                     renderItem={(project: Project) => <ProjectListItem key={project.item_id} project={project} onComplete={onComplete} />}
                     onAdd={() => {
                         setModalOpen(true);
