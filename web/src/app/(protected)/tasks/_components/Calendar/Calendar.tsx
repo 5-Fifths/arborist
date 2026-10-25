@@ -27,9 +27,9 @@ export default function Calendar({ projects, tasks }: CalendarProps) {
             <div className={styles.gridContainer}>
                 {DAYS.map((day) => <h3 className={styles.gridHeader} key={day}>{day}</h3>)}
                 
-                {daysArray.map((day, idx) => 
+                {daysArray.map((day) => 
                     <CalendarDay
-                        key={idx}
+                        key={day.dateString}
                         date={day.date}
                         monthOffset={day.monthOffset}
                         workItems={tasks}

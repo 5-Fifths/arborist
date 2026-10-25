@@ -1,6 +1,7 @@
 .container {
     background-color: var(--neutral);
     border-radius: 5px;
+    padding: 2px 5px;
 }
 
 .title {
@@ -8,4 +9,20 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: .85rem;
+    color: rgba(0, 0, 0, .65)
+}
+
+.strikethrough {
+    text-decoration: line-through black 1px;
+}
+
+.selected {
+    background-color: var(--neutral);
+    border-radius: 1000px;
+}
+
+.curr {
+    background-color: var(--accent);
+    border-radius: 1000px;
 }

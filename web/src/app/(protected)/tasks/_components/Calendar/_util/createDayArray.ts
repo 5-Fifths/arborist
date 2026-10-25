@@ -1,8 +1,10 @@
 interface CalendarDate {
     date: number,
+    dateString: string,
     monthOffset: 'prev' | 'curr' | 'next';
 }
 
+// Creates an array for the month based on the date passed
 export function createDayArray(date: Date) {
     const daysInPreviousMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
     const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -10,10 +12,19 @@ export function createDayArray(date: Date) {
 
     const dayArray: CalendarDate[] = [];
 
+    function formatDate(year: number, month: number, day: number) {
+        return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    }
+
     // Fill with empty days
     for (let i = firstDay - 1; i >= 0; i--) {
         dayArray.push({
             date: daysInPreviousMonth - i,
+            dateString: formatDate(
+                date.getMonth() === 0 ? date.getFullYear() - 1 : date.getFullYear(),
+                date.getMonth() === 0 ? 11 : date.getMonth() - 1,
+                daysInPreviousMonth - i
+            ),
             monthOffset: 'prev'
         })
     }
@@ -22,6 +33,11 @@ export function createDayArray(date: Date) {
     for (let i = 1; i <= daysInMonth; i++) {
         dayArray.push({
             date: i,
+            dateString: formatDate(
+                date.getFullYear(),
+                date.getMonth(),
+                i
+            ),
             monthOffset: 'curr'
         })
     }
@@ -34,6 +50,11 @@ export function createDayArray(date: Date) {
         for (let i = 1; i <= MIN_THRESHOLD - dayArray.length; i++) { 
             dayArray.push({
                 date: i,
+                dateString: formatDate(
+                    date.getMonth() === 11 ? date.getFullYear() + 1 : date.getFullYear(),
+                    date.getMonth() === 11 ? 0 : date.getMonth() + 1,
+                    i
+                ),
                 monthOffset: 'next'
             })
         }
@@ -45,6 +66,11 @@ export function createDayArray(date: Date) {
         for (let i = 1; dayArray.length < MAX_LENGTH; i++) {
             dayArray.push({
                 date: i,
+                dateString: formatDate(
+                    date.getMonth() === 11 ? date.getFullYear() + 1 : date.getFullYear(),
+                    date.getMonth() === 11 ? 0 : date.getMonth() + 1,
+                    i
+                ),
                 monthOffset: 'next'
             })
         }

@@ -1,8 +1,10 @@
 .container {
     display: flex;
     flex-direction: column;
+    gap: 5px;
     background-color: white;
     font-family: var(--font-dm-mono);
+    padding: 10px;
 }
 
 .date {
@@ -11,4 +13,9 @@
 
 .fadedDate {
     color: var(--neutral);
+}
+
+.additional {
+    color: var(--neutral);
+    font-size: .8rem;
 }

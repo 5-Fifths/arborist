@@ -5,8 +5,8 @@
 }
 
 .mainContainer {
+    margin-left: 1px;
     border-top: 1px solid var(--neutral);
-    padding: 0px 20px;
     display: flex;
     flex: 1;
 }
@@ -31,4 +31,5 @@
 
 .infoBar {
     flex: 2;
+    border-left: 1px solid var(--neutral);
 }
