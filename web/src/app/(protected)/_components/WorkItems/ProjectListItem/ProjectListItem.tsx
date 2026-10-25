@@ -1,13 +1,13 @@
 'use client';
 
-import { Project } from "@/types/WorkItem";
+import { type Project } from "@/types/WorkItem";
 
 import Tag from "@/components/Tag/Tag";
 
-import projectStyles from "./DashboardProject.module.css";
+import projectStyles from "./ProjectListItem.module.css";
 import styles from "../styles.module.css";
 
-interface DashboardProjectProps {
+interface ProjectListItemProps {
     project: Project,
     onComplete: (project: Project) => void
 }
@@ -30,7 +30,7 @@ function countCompletedSubtasks(project: Project) {
     return 0;
 }
 
-export default function DashboardProject({ project, onComplete }: DashboardProjectProps) {
+export default function ProjectListItem({ project, onComplete }: ProjectListItemProps) {
     // Display only the first tag in the project
     const firstTag = project.tags?.at(0) ?? undefined;
 

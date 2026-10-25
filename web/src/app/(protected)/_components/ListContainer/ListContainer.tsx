@@ -2,19 +2,19 @@ import { WorkItem } from "@/types/WorkItem";
 
 import styles from "./styles.module.css";
 
-interface DashboardSectionProps<T extends WorkItem> {
+interface ListContainerProps<T extends WorkItem> {
     title: string,
     workItems: T[],
     renderItem: (item: T) => React.ReactNode,
     onAdd: () => void
 }
 
-export default function DashboardSection<T extends WorkItem>({
+export default function ListContainer<T extends WorkItem>({
     title, 
     workItems, 
     renderItem,
     onAdd
-}: DashboardSectionProps<T>) { 
+}: ListContainerProps<T>) { 
     return (
         <section className={styles.container}>
             <div className={styles.sectionTitle}>
@@ -25,7 +25,7 @@ export default function DashboardSection<T extends WorkItem>({
                 {workItems.map((item, index) => {
                     return (
                         <div key={index} className={styles.itemWrapper}>
-                            <p className={styles.number}>{index < 10 ? `0${index + 1}` : index + 1}</p>
+                            <p className={styles.number}>{index < 9 ? `0${index + 1}` : index + 1}</p>
                             {renderItem(item)}
                         </div>
                     )

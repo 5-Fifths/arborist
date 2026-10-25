@@ -1,0 +1,12 @@
+.container {
+    background-color: var(--neutral);
+    height: 10px;
+    border-radius: 10px;
+    width: 200px;
+}
+
+.progress {
+    background-color: var(--accent);
+    border-radius: 10px;
+    height: 10px;
+}

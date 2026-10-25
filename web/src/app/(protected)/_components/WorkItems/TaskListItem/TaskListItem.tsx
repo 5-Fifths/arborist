@@ -1,18 +1,18 @@
 'use client';
 
-import { Task } from "@/types/WorkItem";
+import { type Task } from "@/types/WorkItem";
 import Tag from "@/components/Tag/Tag";
 
 import styles from "../styles.module.css";
 
-interface DashboardTaskProps {
+interface TaskListItemProps {
     task: Task,
     onComplete: (task: Task) => void
 }
 
 // WIP: Showing checked status of button
 
-export default function DashboardTask({ task, onComplete }: DashboardTaskProps) {
+export default function TaskListItem({ task, onComplete }: TaskListItemProps) {
     // Render only the first tag in the list
     const firstTag = task.tags?.at(0) ?? undefined;
 
