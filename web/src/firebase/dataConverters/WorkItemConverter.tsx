@@ -13,7 +13,7 @@ interface WorkItemDbModel {
     // Item data
     title: string,
     description: string,
-    due_date: Timestamp,
+    due_date: number,
     complete: boolean,
     subtasks?: TruncatedTask[],
     tags: string[]
@@ -27,9 +27,7 @@ export const WorkItemConverter = {
                 complete: subtask.complete
             })) ?? [];
 
-            const date = workItem.due_date instanceof Date ? 
-                Timestamp.fromDate(workItem.due_date) :
-                Timestamp.fromDate(new Date(workItem.due_date));
+            const date = workItem.due_date.getTime();
 
             const result: WorkItemDbModel = {
                 item_type: workItem.item_type,
@@ -62,7 +60,7 @@ export const WorkItemConverter = {
     
                 title: data.title,
                 description: data.description,
-                due_date: data.due_date?.toDate() ?? new Date(),
+                due_date: new Date(data.due_date),
                 complete: data.complete,
                 tags: data.tags
             }

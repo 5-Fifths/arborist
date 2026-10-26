@@ -7,8 +7,27 @@
     padding: 10px;
 }
 
-.date {
-    color: var(--accent);
+.dateLine {
+    margin-bottom: 5px;
+
+    .date {
+        padding: .25rem .275rem;
+        font-size: 10.5pt;
+        color: var(--accent);
+    }
+
+    .selected {
+        background-color: var(--neutral);
+        color: accent;
+        border-radius: 1000px;
+        display: inline;
+    }
+
+    .current {
+        background-color: var(--accent);
+        color: white;
+        border-radius: 1000px;
+    }
 }
 
 .fadedDate {

@@ -17,12 +17,3 @@
     text-decoration: line-through black 1px;
 }
 
-.selected {
-    background-color: var(--neutral);
-    border-radius: 1000px;
-}
-
-.curr {
-    background-color: var(--accent);
-    border-radius: 1000px;
-}

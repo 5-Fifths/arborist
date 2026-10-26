@@ -5,12 +5,13 @@ import Event from "../Event/Event"
 import styles from "./styles.module.css";
 
 interface CalendarDayProps {
+    active: boolean,
     date: number,
     monthOffset: 'prev' | 'curr' | 'next',
     workItems: WorkItem[]
 }
 
-export default function CalendarDay({ date, monthOffset, workItems }: CalendarDayProps) {
+export default function CalendarDay({ date, active, monthOffset, workItems }: CalendarDayProps) {
     const MAX_DISPLAYED = 2;
 
     const lengthExceeded = workItems.length > MAX_DISPLAYED;
@@ -21,7 +22,9 @@ export default function CalendarDay({ date, monthOffset, workItems }: CalendarDa
 
     return (
         <div className={styles.container}>
-            <div className={monthOffset === 'curr' ? styles.date : styles.fadedDate}>{date}</div>
+            <div className={styles.dateLine}>
+                <span className={`${monthOffset === 'curr' ? styles.date : styles.fadedDate} ${active ? styles.current : null}`}>{date}</span>
+            </div>
 
             {
                 displayedEvents ? 
@@ -35,7 +38,8 @@ export default function CalendarDay({ date, monthOffset, workItems }: CalendarDa
                     }) 
                     : null
             }
-            <p className={styles.additional}>+{lengthExceeded ? workItems.length - displayedEvents.length : workItems.length} more...</p>
+            <p className={styles.additional}>{lengthExceeded ? `+${workItems.length - displayedEvents.length} more...` : null}</p>
+                
         </div>
     )
 }

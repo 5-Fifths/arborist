@@ -1,3 +1,5 @@
+import { formatDate } from "@/app/(protected)/_util/formatDate";
+
 interface CalendarDate {
     date: number,
     dateString: string,
@@ -12,32 +14,32 @@ export function createDayArray(date: Date) {
 
     const dayArray: CalendarDate[] = [];
 
-    function formatDate(year: number, month: number, day: number) {
-        return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    }
+    const temp = new Date(date);
+
+    temp.setMonth(date.getMonth() - 1);
 
     // Fill with empty days
     for (let i = firstDay - 1; i >= 0; i--) {
+        const day = daysInPreviousMonth - i;
+
+        temp.setDate(day);
+
         dayArray.push({
-            date: daysInPreviousMonth - i,
-            dateString: formatDate(
-                date.getMonth() === 0 ? date.getFullYear() - 1 : date.getFullYear(),
-                date.getMonth() === 0 ? 11 : date.getMonth() - 1,
-                daysInPreviousMonth - i
-            ),
+            date: day,
+            dateString: formatDate(temp),
             monthOffset: 'prev'
         })
     }
 
     // Fill days of the current month
+    temp.setMonth(date.getMonth());
+
     for (let i = 1; i <= daysInMonth; i++) {
+        temp.setDate(i);
+
         dayArray.push({
             date: i,
-            dateString: formatDate(
-                date.getFullYear(),
-                date.getMonth(),
-                i
-            ),
+            dateString: formatDate(temp),
             monthOffset: 'curr'
         })
     }
@@ -46,33 +48,31 @@ export function createDayArray(date: Date) {
     const MIN_THRESHOLD = 35;
     
     // Fill the remainder of the 5th row with days from the next month
-    if (dayArray.length <= MIN_THRESHOLD) {
+    temp.setMonth(date.getMonth() + 1);
+
+    if (dayArray.length < MIN_THRESHOLD) {
         for (let i = 1; i <= MIN_THRESHOLD - dayArray.length; i++) { 
+            temp.setDate(i);
+
             dayArray.push({
                 date: i,
-                dateString: formatDate(
-                    date.getMonth() === 11 ? date.getFullYear() + 1 : date.getFullYear(),
-                    date.getMonth() === 11 ? 0 : date.getMonth() + 1,
-                    i
-                ),
+                dateString: formatDate(temp),
                 monthOffset: 'next'
-            })
+            });
         }
     }
     // Fill the remainder of the 6th row, if it exists
-    else {
+    else if (dayArray.length > MIN_THRESHOLD) {
         const MAX_LENGTH = 42;
 
         for (let i = 1; dayArray.length < MAX_LENGTH; i++) {
+            temp.setDate(i);
+
             dayArray.push({
                 date: i,
-                dateString: formatDate(
-                    date.getMonth() === 11 ? date.getFullYear() + 1 : date.getFullYear(),
-                    date.getMonth() === 11 ? 0 : date.getMonth() + 1,
-                    i
-                ),
+                dateString: formatDate(temp),
                 monthOffset: 'next'
-            })
+            });
         }
     }
 

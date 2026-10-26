@@ -52,13 +52,15 @@ export default function WorkItemCreationModal({
     function createWorkItem(formData: FormData) {
         const itemType = type === "Project" ? "Project" : "Task";
 
+        const [year, month, date] = (formData.get("due_date") as string).split('-').map(Number);
+
         const workItem: WorkItem = {
             item_id: crypto.randomUUID(),
             
             item_type: itemType,
             title: formData.get("title") as string,
             description: formData.get("description") as string ?? "",
-            due_date: new Date(formData.get("due_date") as string),
+            due_date: new Date(year, month - 1, date),
             tags: tags ?? [],
             complete: false
         }

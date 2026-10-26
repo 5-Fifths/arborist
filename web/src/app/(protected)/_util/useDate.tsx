@@ -1,5 +1,5 @@
 export function useDate() {
-    const date = new Date(Date.now());
+    const date = new Date();
     const formattedDate = date.toLocaleDateString(
         undefined,
         {

@@ -1,3 +1,5 @@
+'use client';
+
 import { Project, Task } from "@/types/WorkItem";
 import { useDate } from "../../../_util/useDate";
 import { createDayArray } from "./_util/createDayArray";
@@ -5,6 +7,7 @@ import { createDayArray } from "./_util/createDayArray";
 import CalendarDay from "../CalendarDay/CalendarDay";
 
 import styles from "./styles.module.css";
+import { formatDate } from "@/app/(protected)/_util/formatDate";
 
 interface CalendarProps {
     projects: Project[],
@@ -19,22 +22,34 @@ export default function Calendar({ projects, tasks }: CalendarProps) {
 
     const daysArray = createDayArray(date);
 
+    const mappedWorkItems = [
+        ...(tasks.map((task) => ({
+            ...task,
+            dateString: formatDate(task.due_date)
+        }))),
+        ...(projects.map((project) => ({
+            ...project,
+            dateString: formatDate(project.due_date)
+        })))
+    ]
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <p className={styles.month}>{month}</p>
+                <span className={styles.month}>{month}</span>
             </div>
             <div className={styles.gridContainer}>
                 {DAYS.map((day) => <h3 className={styles.gridHeader} key={day}>{day}</h3>)}
                 
-                {daysArray.map((day) => 
-                    <CalendarDay
+                {daysArray.map((day) => {
+                    return <CalendarDay
                         key={day.dateString}
+                        active={day.dateString === formatDate(date)}
                         date={day.date}
                         monthOffset={day.monthOffset}
-                        workItems={tasks}
+                        workItems={mappedWorkItems.filter((workItem) => workItem.dateString === day.dateString)}
                     />
-                )}
+                })}
             </div>
         </div>
     )
