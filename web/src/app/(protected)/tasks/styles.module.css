@@ -28,8 +28,3 @@
         font-weight: 600;
     }
 }
-
-.infoBar {
-    flex: 2;
-    border-left: 1px solid var(--neutral);
-}

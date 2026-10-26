@@ -5,13 +5,14 @@
 }
 
 .header {
+    color: var(--accent);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-family: var(--font-noto-serif);
     font-size: 18pt;
-    font-weight: 500;
-    color: var(--accent);
-    padding: 10px 20px;
+    letter-spacing: .5px;
+    padding: 15px;
 }
 
 .gridContainer {

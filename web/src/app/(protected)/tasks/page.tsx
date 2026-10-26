@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from "react";
 import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
 import { useWorkItems } from "../_util/useWorkItems";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useDate } from "../_util/useDate";
+import { WorkItem } from "@/types/WorkItem";
 
 import ListContainer from "../_components/ListContainer/ListContainer";
 import Calendar from "./_components/Calendar/Calendar";
@@ -12,6 +14,7 @@ import Calendar from "./_components/Calendar/Calendar";
 import styles from "./styles.module.css";
 
 export default function TasksPage() {
+    // const [activeDay, setActiveDay] = useState<
     const { userRefPath } = useUserRefPath();
     const {
         projects,
@@ -20,11 +23,19 @@ export default function TasksPage() {
         isError,
         error
     } = useWorkItems(userRefPath);
+    const { formattedDate } = useDate();
 
-    const updateItem = useUpdateWorkItemDoc();
+    const debouncedUpdate = useUpdateWorkItemDoc();
     const createItem = useCreateWorkItemDoc();
 
-    const { formattedDate } = useDate();
+    const onComplete = (workItem: WorkItem) => {
+            const updatedWorkItem: WorkItem = {
+                ...workItem,
+                complete: !workItem.complete
+            }
+    
+            debouncedUpdate(updatedWorkItem);
+        }
 
     return (
         <main className={styles.container}>
@@ -37,9 +48,16 @@ export default function TasksPage() {
                     projects={projects}
                     tasks={tasks}
                 />
-                <aside className={styles.infoBar}>
-                    a
-                </aside>
+                <div style={{flex: 2}}>
+                    <ListContainer 
+                        title={"a"}
+                        workItems={[]}
+                        onItemComplete={onComplete}
+                        onAdd={() => {
+
+                        }}
+                    />
+                </div>
             </div>
         </main>
     )

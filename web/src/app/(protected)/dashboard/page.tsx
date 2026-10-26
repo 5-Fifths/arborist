@@ -105,7 +105,7 @@ export default function Dashboard() {
                 <ListContainer
                     title={"TODAY'S TASKS"}
                     workItems={filteredTasks}
-                    renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
+                    onItemComplete={onComplete}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Task");
@@ -114,7 +114,7 @@ export default function Dashboard() {
                 <ListContainer 
                     title={"URGENT TASKS"}
                     workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
-                    renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
+                    onItemComplete={onComplete}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Urgent Task");
@@ -123,7 +123,7 @@ export default function Dashboard() {
                 <ListContainer 
                     title={"URGENT PROJECTS"}
                     workItems={filteredProjects}
-                    renderItem={(project: Project) => <ProjectListItem key={project.item_id} project={project} onComplete={onComplete} />}
+                    onItemComplete={onComplete}
                     onAdd={() => {
                         setModalOpen(true);
                         setModalType("Project");

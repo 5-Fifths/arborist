@@ -9,10 +9,10 @@
 
 .dateLine {
     margin-bottom: 5px;
+    font-size: 10.5pt;
 
     .date {
         padding: .25rem .275rem;
-        font-size: 10.5pt;
         color: var(--accent);
     }
 
@@ -28,10 +28,10 @@
         color: white;
         border-radius: 1000px;
     }
-}
 
-.fadedDate {
-    color: var(--neutral);
+    .fadedDate {
+        color: var(--neutral);
+    }
 }
 
 .additional {
