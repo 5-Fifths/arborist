@@ -4,33 +4,15 @@ import {
     useEffect
 } from "react";
 
-export function useTimer(initialTime: number) {
+// initialTime is measured in minutes
+export function useTimer(initialDurationInMs: number) {
     const [isReset, setIsReset] = useState(true);
     const [isPaused, setIsPaused] = useState(true);
-    const [time, setTime] = useState(initialTime);
-    const [prevInitialTime, setPrevInitialTime] = useState(initialTime);
+    const [remainingTime, setRemainingTime] = useState(initialDurationInMs);
 
-    // Prevents a flash of the progress bar
-    if (prevInitialTime !== initialTime) {
-        setPrevInitialTime(initialTime);
-        setTime(initialTime);
-        setIsReset(true);
-        setIsPaused(true);
-    }
-
+    const targetTimeRef = useRef(initialDurationInMs + Date.now());
+    const remainingTimeDuringPause = useRef(initialDurationInMs);
     const intervalId = useRef<ReturnType<typeof setInterval>>(null);
-
-    const decrementTime = () => {
-        setTime(prev => {
-            if (prev <= 1000) {
-                handleTimerEnd();
-                return 0;
-            }
-            else {
-                return prev - 1000;
-            }
-        })
-    }
 
     const startTimer = () => {
         setIsPaused(false);
@@ -40,22 +22,43 @@ export function useTimer(initialTime: number) {
         if (intervalId.current) {
             return;
         }
-    
+
         // Start the timer
-        const id = setInterval(decrementTime, 1000);
+        const id = setInterval(decrementTime, 350);
         intervalId.current = id;
+        targetTimeRef.current = remainingTimeDuringPause.current + Date.now();
+    }
+
+    const decrementTime = () => {
+        const timeLeft = targetTimeRef.current - Date.now();
+
+        if (timeLeft <= 0) {
+            setIsPaused(true);
+            setRemainingTime(0);
+            remainingTimeDuringPause.current = 0;
+
+            handleTimerEnd();
+        }
+        else {
+            setRemainingTime(timeLeft);
+            remainingTimeDuringPause.current = timeLeft;
+        }
     }
 
     const pauseTimer = () => {
         setIsPaused(true);
-
         stopTimer();
+
+        remainingTimeDuringPause.current = targetTimeRef.current - Date.now();  
     }
 
     const resetTimer = () => {
-        setTime(initialTime);
-        setIsPaused(false);
+        setIsPaused(true);
         setIsReset(true);
+
+        remainingTimeDuringPause.current = initialDurationInMs;
+        targetTimeRef.current = initialDurationInMs + Date.now();
+        setRemainingTime(initialDurationInMs);
 
         stopTimer();
     }
@@ -74,16 +77,16 @@ export function useTimer(initialTime: number) {
     }
 
     useEffect(() => {
-        stopTimer();
-        setTime(initialTime);
-        setIsReset(true);
-        setIsPaused(true);
+        targetTimeRef.current = initialDurationInMs + Date.now();
+        remainingTimeDuringPause.current = initialDurationInMs;
+        setRemainingTime(initialDurationInMs);
 
-        // Cleanup on unmount
+        
+
         return () => {
             stopTimer();
         }
-    }, [initialTime]);
+    }, [initialDurationInMs]);
 
     return {
         startTimer,
@@ -91,6 +94,6 @@ export function useTimer(initialTime: number) {
         resetTimer,
         isReset,
         isPaused,
-        time
+        remainingTime
     }
 }
