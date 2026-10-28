@@ -19,8 +19,8 @@
 
     .pageTitle {
         font-family: var(--font-noto-serif);
-        font-size: 2.5rem;
-        font-weight: 600;
+        font-size: 2.25rem;
+        font-weight: 500;
     }
 
     .horizontal {

@@ -1,37 +1,26 @@
 'use client';
 
-import { Project, Task } from "@/types/WorkItem";
+import { WorkItem } from "@/types/WorkItem";
 import { useDate } from "../../../_util/useDate";
 import { createDayArray } from "./_util/createDayArray";
+import { formatDate } from "@/app/(protected)/_util/formatDate";
 
 import CalendarDay from "../CalendarDay/CalendarDay";
 
 import styles from "./styles.module.css";
-import { formatDate } from "@/app/(protected)/_util/formatDate";
 
 interface CalendarProps {
-    projects: Project[],
-    tasks: Task[]
+    mappedWorkItems: (WorkItem & { dateString: string})[],
+    onSelectDate: (dateString: string) => void
 }
 
-export default function Calendar({ projects, tasks }: CalendarProps) {
+export default function Calendar({ mappedWorkItems, onSelectDate }: CalendarProps) {
     const { date } = useDate();
     const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'] as const;
     
     const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
 
     const daysArray = createDayArray(date);
-
-    const mappedWorkItems = [
-        ...(tasks.map((task) => ({
-            ...task,
-            dateString: formatDate(task.due_date)
-        }))),
-        ...(projects.map((project) => ({
-            ...project,
-            dateString: formatDate(project.due_date)
-        })))
-    ]
 
     return (
         <div className={styles.container}>

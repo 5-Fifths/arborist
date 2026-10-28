@@ -1,19 +1,18 @@
 'use client';
 
-import { useState, useMemo } from "react";
-import { Task, Project, WorkItem } from "@/types/WorkItem";
+import { useState } from "react";
+import { WorkItem } from "@/types/WorkItem";
 import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
 import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
 import { useDate } from "../_util/useDate";
 import { useRefreshCache } from "../_util/useRefreshCache";
+import { formatDate } from "../_util/formatDate";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
 import ListContainer from "../_components/ListContainer/ListContainer";
-import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
-import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
@@ -60,14 +59,7 @@ export default function Dashboard() {
     }
 
     // Format date string
-    const { formattedDate } = useDate();
-
-    const filteredTasks = useMemo(() => {
-        return tasks.filter((task) => !task.complete);
-    }, [tasks]);
-    const filteredProjects = useMemo(() => {
-        return projects.filter((project) => !project.complete);
-    }, [projects]);
+    const { date, formattedDate } = useDate();
 
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
@@ -87,6 +79,7 @@ export default function Dashboard() {
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{formattedDate}</p>
+                <div className={styles.pageTitle}>Dashboard</div>
                 <div className={styles.horizontal}>
                     <ProgressBar
                         percentageFilled={tasks.filter((task) => task.complete).length / tasks.length}  
@@ -104,7 +97,11 @@ export default function Dashboard() {
             <div className={styles.mainContainer}>
                 <ListContainer
                     title={"TODAY'S TASKS"}
-                    workItems={filteredTasks}
+                    workItems={tasks.filter((task) => {
+                        console.log(task.due_date);
+                        
+                        return formatDate(task.due_date) === formatDate(date)
+                    })}
                     onItemComplete={onComplete}
                     onAdd={() => {
                         setModalOpen(true);
@@ -113,7 +110,7 @@ export default function Dashboard() {
                 />  
                 <ListContainer 
                     title={"URGENT TASKS"}
-                    workItems={filteredTasks.filter(task => task.tags?.includes("Urgent"))}
+                    workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
                     onItemComplete={onComplete}
                     onAdd={() => {
                         setModalOpen(true);
@@ -122,7 +119,7 @@ export default function Dashboard() {
                 />
                 <ListContainer 
                     title={"URGENT PROJECTS"}
-                    workItems={filteredProjects}
+                    workItems={projects.filter((project) => project.tags?.includes("Urgent"))}
                     onItemComplete={onComplete}
                     onAdd={() => {
                         setModalOpen(true);
