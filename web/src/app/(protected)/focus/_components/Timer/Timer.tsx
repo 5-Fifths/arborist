@@ -15,7 +15,7 @@ export default function Timer() {
         resetTimer,
         isPaused,
         isReset,
-        time
+        remainingTime
     } = useTimer(initialTime);
 
     const buttonLabel = isReset 
@@ -24,15 +24,15 @@ export default function Timer() {
             ? 'Resume' 
             : 'Pause';
 
-    const seconds = Math.floor(time / 1000) % 60;
-    const minutes = Math.floor(time / (60 * 1000));
+    const seconds = Math.floor(remainingTime / 1000) % 60;
+    const minutes = Math.floor(remainingTime / (60 * 1000));
 
     return (
         <>
             <div 
                 className={styles.timerContainer} 
                 style={{
-                    backgroundImage: `conic-gradient(#4F6F52 ${(initialTime - time) / initialTime * 360}deg, #c7cdbf ${(initialTime - time) / initialTime * 360}deg)`
+                    backgroundImage: `conic-gradient(#4F6F52 ${(initialTime - remainingTime) / initialTime * 360}deg, #c7cdbf ${(initialTime - remainingTime) / initialTime * 360}deg)`
                 }}>
                 <div className={styles.textContainer}>
                     <div className={styles.timer}>
@@ -47,7 +47,7 @@ export default function Timer() {
                         onClick={() => {
                             isReset || isPaused ? startTimer() : pauseTimer();
                         }}
-                        disabled={time === 0}
+                        disabled={remainingTime <= 0}
                     >
                         {buttonLabel}
                     </button>
