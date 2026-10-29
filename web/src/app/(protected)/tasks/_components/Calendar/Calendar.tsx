@@ -31,14 +31,16 @@ export default function Calendar({ mappedWorkItems, onSelectDate }: CalendarProp
                 {DAYS.map((day) => <h3 className={styles.gridHeader} key={day}>{day}</h3>)}
                 
                 {daysArray.map((day) => {
-                    return <CalendarDay
-                        key={day.dateString}
-                        active={day.dateString === formatDate(date)}
-                        date={day.date}
-                        monthOffset={day.monthOffset}
-                        workItems={mappedWorkItems.filter((workItem) => workItem.dateString === day.dateString)}
-                    />
-                })}
+                    return (
+                        <CalendarDay
+                            key={day.dateString}
+                            active={day.dateString === formatDate(date)}
+                            date={day.date}
+                            monthOffset={day.monthOffset}
+                            workItems={mappedWorkItems.filter((workItem) => workItem.dateString === day.dateString)}
+                            onSelect={() => onSelectDate(day.dateString)}
+                        />
+                    )})}
             </div>
         </div>
     )

@@ -67,7 +67,7 @@ export default function TasksPage() {
                         workItems={mappedWorkItems.filter((item) => item.dateString === activeDay)}
                         onItemComplete={onComplete}
                         onAdd={() => {
-
+                            
                         }}
                     />
                 </div>

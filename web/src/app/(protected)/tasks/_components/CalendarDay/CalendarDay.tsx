@@ -8,10 +8,11 @@ interface CalendarDayProps {
     active: boolean,
     date: number,
     monthOffset: 'prev' | 'curr' | 'next',
-    workItems: WorkItem[]
+    workItems: WorkItem[],
+    onSelect: () => void
 }
 
-export default function CalendarDay({ date, active, monthOffset, workItems }: CalendarDayProps) {
+export default function CalendarDay({ date, active, monthOffset, workItems, onSelect }: CalendarDayProps) {
     const MAX_DISPLAYED = 2;
 
     const lengthExceeded = workItems.length > MAX_DISPLAYED;
@@ -21,7 +22,7 @@ export default function CalendarDay({ date, active, monthOffset, workItems }: Ca
         workItems;
 
     return (
-        <div className={styles.container}>
+        <div onClick={onSelect} className={styles.container}>
             <div className={styles.dateLine}>
                 <span className={`${monthOffset === 'curr' ? styles.date : styles.fadedDate} ${active ? styles.current : null}`}>{date}</span>
             </div>
