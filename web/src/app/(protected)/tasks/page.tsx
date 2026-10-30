@@ -9,9 +9,6 @@ import { useDate } from "../_util/useDate";
 import { WorkItem } from "@/types/WorkItem";
 import { formatDate } from "../_util/formatDate";
 
-import ListContainer from "../_components/ListContainer/ListContainer";
-import Calendar from "./_components/Calendar/Calendar";
-
 import styles from "./styles.module.css";
 
 export default function TasksPage() {
@@ -24,8 +21,6 @@ export default function TasksPage() {
         error
     } = useWorkItems(userRefPath);
     const { date, formattedDate } = useDate();
-
-    const [activeDay, setActiveDay] = useState(formatDate(date));
 
     const debouncedUpdate = useUpdateWorkItemDoc();
     const createItem = useCreateWorkItemDoc();
@@ -57,20 +52,7 @@ export default function TasksPage() {
                 <p className={styles.pageTitle}>Tasks</p>
             </div>
             <div className={styles.mainContainer}>
-                <Calendar 
-                    mappedWorkItems={mappedWorkItems}
-                    onSelectDate={setActiveDay}
-                />
-                <div style={{flex: 2}}>
-                    <ListContainer 
-                        title={activeDay}
-                        workItems={mappedWorkItems.filter((item) => item.dateString === activeDay)}
-                        onItemComplete={onComplete}
-                        onAdd={() => {
-                            
-                        }}
-                    />
-                </div>
+                
             </div>
         </main>
     )
