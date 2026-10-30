@@ -17,9 +17,27 @@
     inset: 0;
     background-color: white;
     padding: 30px;
-    width: 450px;
+    width: 500px;
     height: fit-content;
     z-index: 1;
+
+    .controls {
+        display: flex;
+        gap: 10px;
+        font-size: 10pt;
+        position: absolute;
+        bottom: 40px;
+
+        p {
+            font-family: var(--font-dm-mono);
+        }
+
+        p > kbd {
+            border: 1px solid var(--neutral);
+            border-radius: 3px;
+            padding: .2rem;
+        }
+    }
 }
 
 .error {

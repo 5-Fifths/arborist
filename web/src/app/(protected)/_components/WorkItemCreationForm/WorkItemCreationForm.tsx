@@ -2,26 +2,24 @@
 
 import { useState } from "react";
 
-import { WorkItem } from "@/types/WorkItem";
+import { ItemType, WorkItem } from "@/types/WorkItem";
 import Tag from "@/components/Tag/Tag";
 
 import styles from "./styles.module.css";
 
 interface WorkItemCreationModalProps {
-    type: "Task" | "Project" | "Urgent Task",
     onSubmit: (workItem: WorkItem) => void,
     onClose: () => void,
     setError: (error: string | undefined) => void
 }
 
 export default function WorkItemCreationModal({
-    type, 
     onSubmit, 
     onClose,
     setError
 }: WorkItemCreationModalProps) {   
     const [currentTag, setCurrentTag] = useState<string>("");
-    const [tags, setTags] = useState(type !== "Task" ? ["Urgent"] : []);
+    const [tags, setTags] = useState<string[]>([]);
 
     const handleAddTag = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -50,17 +48,16 @@ export default function WorkItemCreationModal({
     }
 
     function createWorkItem(formData: FormData) {
-        const itemType = type === "Project" ? "Project" : "Task";
-
         const [year, month, date] = (formData.get("due_date") as string).split('-').map(Number);
+        const [hours, minutes] = (formData.get("due_time") as string).split(":").map(Number);
 
         const workItem: WorkItem = {
             item_id: crypto.randomUUID(),
             
-            item_type: itemType,
+            item_type: formData.get("item_type") as ItemType,
             title: formData.get("title") as string,
             description: formData.get("description") as string ?? "",
-            due_date: new Date(year, month - 1, date),
+            due_date: new Date(year, month - 1, date, hours, minutes),
             tags: tags ?? [],
             complete: false
         }
@@ -71,7 +68,7 @@ export default function WorkItemCreationModal({
 
     return (
         <>
-            <div className={styles.header}>Create a New {type}</div>
+            <div className={styles.header}>Create a New Item</div>
             <form
                 className={styles.form}
                 onSubmit={(e) => {
@@ -90,7 +87,8 @@ export default function WorkItemCreationModal({
                     onSubmit(workItem);
                 }}
             >
-                <div className={styles.horizontal}>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label} htmlFor="title">Title</label>
                     <input 
                         name="title"
                         type="text"  
@@ -98,26 +96,50 @@ export default function WorkItemCreationModal({
                         className={`${styles.input} ${styles.title}`}
                         required
                     />
-                    <input
-                        name="due_date" 
-                        type="date" 
-                        className={styles.input}
-                        required
-                    />
                 </div>
-                <textarea
-                    name="description" 
-                    placeholder="Description" 
-                    className={`${styles.input} ${styles.description}`} 
-                />  
                 <div className={styles.horizontal}>
-                    <input 
-                        type="text" 
-                        className={`${styles.input}`} 
-                        placeholder="Tag"
-                        value={currentTag}
-                        onChange={(e) => {setCurrentTag(e.target.value);}}
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="item_type">Item Type</label>
+                        <select name="item_type" className={styles.input}>
+                            <option className={styles.option} value="Task">Task</option>
+                            <option className={styles.option} value="Project">Project</option>
+                        </select>  
+                    </div>               
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="due_date">Due Date</label>
+                        <input
+                            name="due_date" 
+                            type="date" 
+                            className={styles.input}
+                            required
                         />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="due_time">Due Time</label>
+                        <input className={styles.input} type="time" name="due_time"/>
+                    </div>
+                </div>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label} htmlFor="Description">Description</label>
+                    <textarea
+                        name="description" 
+                        placeholder="Description" 
+                        className={`${styles.input} ${styles.description}`} 
+                    />  
+                </div>
+                <div className={styles.horizontal}>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label} htmlFor="tags">Tags</label>
+                        <input 
+                            name="tags"
+                            type="text" 
+                            className={`${styles.input}`} 
+                            placeholder="Tag"
+                            value={currentTag}
+                            onChange={(e) => {setCurrentTag(e.target.value);}}
+                        />
+                    </div>
+                    
                     <button 
                         className={`${styles.createButton} ${styles.button}`}
                         onClick={(e) => {

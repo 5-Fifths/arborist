@@ -6,10 +6,10 @@ interface ModalProps {
     onClose: () => void
 }
 
-// Opens modal container; populate using modal content as children
+// Modal container
 export default function Modal({ children, error, onClose }: ModalProps) {
     return (
-        <div className={styles.overlay} onClick={onClose}>
+        <div className={styles.overlay}>
             {error ? 
                 <div className={styles.error}>
                     {error}
@@ -19,6 +19,10 @@ export default function Modal({ children, error, onClose }: ModalProps) {
             }
             <div className={styles.container} onClick={(e) => e.stopPropagation()}>
                 {children}
+                <div className={styles.controls}>
+                    <p><kbd>Esc</kbd> to cancel</p>
+                    <p><kbd>Tab</kbd> to navigate</p>
+                </div>
             </div>
         </div>
     )
