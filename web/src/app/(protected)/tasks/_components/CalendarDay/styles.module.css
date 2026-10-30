@@ -5,6 +5,11 @@
     background-color: white;
     font-family: var(--font-dm-mono);
     padding: 10px;
+    transition: background-color .2s;
+}
+
+.container:hover > .dateLine > .date {
+    background-color: var(--neutral);
 }
 
 .dateLine {
@@ -14,6 +19,8 @@
     .date {
         padding: .25rem .275rem;
         color: var(--accent);
+        border-radius: 1000px;
+        transition: background-color .1s
     }
 
     .selected {

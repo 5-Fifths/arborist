@@ -24,7 +24,7 @@ export default function CalendarDay({ date, active, monthOffset, workItems, onSe
     return (
         <div onClick={onSelect} className={styles.container}>
             <div className={styles.dateLine}>
-                <span className={`${monthOffset === 'curr' ? styles.date : styles.fadedDate} ${active ? styles.current : null}`}>{date}</span>
+                <span className={`${monthOffset === 'curr' ? styles.date : styles.fadedDate} ${active ? styles.current : null}`}>{String(date).padStart(2, '0')}</span>
             </div>
 
             {
