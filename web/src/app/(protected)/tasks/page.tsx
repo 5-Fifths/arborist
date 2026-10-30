@@ -9,6 +9,8 @@ import { useDate } from "../_util/useDate";
 import { WorkItem } from "@/types/WorkItem";
 import { formatDate } from "../_util/formatDate";
 
+import CalendarView from "./_components/CalendarView/CalendarView";
+
 import styles from "./styles.module.css";
 
 export default function TasksPage() {
@@ -20,7 +22,7 @@ export default function TasksPage() {
         isError,
         error
     } = useWorkItems(userRefPath);
-    const { date, formattedDate } = useDate();
+    const { formattedDate } = useDate();
 
     const debouncedUpdate = useUpdateWorkItemDoc();
     const createItem = useCreateWorkItemDoc();
@@ -52,7 +54,11 @@ export default function TasksPage() {
                 <p className={styles.pageTitle}>Tasks</p>
             </div>
             <div className={styles.mainContainer}>
-                
+                <CalendarView 
+                    mappedWorkItems={mappedWorkItems}
+                    onComplete={onComplete}
+                    onAdd={createItem.mutate}
+                />
             </div>
         </main>
     )

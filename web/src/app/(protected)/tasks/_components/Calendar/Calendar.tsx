@@ -1,5 +1,3 @@
-'use client';
-
 import { WorkItem } from "@/types/WorkItem";
 import { useDate } from "../../../_util/useDate";
 import { createDayArray } from "./_util/createDayArray";
