@@ -16,6 +16,11 @@
     flex-direction: column;
     padding: 20px;
 
+    .horizontal {
+        display: flex;
+        justify-content: space-between;
+    }
+
     .date {
         color: var(--accent);
         font-family: var(--font-dm-mono);

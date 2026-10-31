@@ -10,10 +10,14 @@ import { WorkItem } from "@/types/WorkItem";
 import { formatDate } from "../_util/formatDate";
 
 import CalendarView from "./_components/CalendarView/CalendarView";
+import ListView from "./_components/ListView/ListView";
+import SliderToggle from "@/components/SliderToggle/SliderToggle";
 
 import styles from "./styles.module.css";
 
 export default function TasksPage() {
+    const [activeView, setActiveView] = useState<"List" | "Calendar">("List");
+
     const { userRefPath } = useUserRefPath();
     const {
         projects,
@@ -51,14 +55,25 @@ export default function TasksPage() {
         <main className={styles.container}>
             <div className={styles.headerContainer}>
                 <p className={styles.date}>{formattedDate}</p>
-                <p className={styles.pageTitle}>Tasks</p>
+                <div className={styles.horizontal}>
+                    <p className={styles.pageTitle}>Tasks</p>
+                    <SliderToggle />
+                </div>
             </div>
             <div className={styles.mainContainer}>
-                <CalendarView 
-                    mappedWorkItems={mappedWorkItems}
-                    onComplete={onComplete}
-                    onAdd={createItem.mutate}
-                />
+                {
+                    activeView === "Calendar" ? 
+                    <CalendarView 
+                        mappedWorkItems={mappedWorkItems}
+                        onComplete={onComplete}
+                        onAdd={createItem.mutate}
+                    /> :
+                    <ListView
+                        workItems={mappedWorkItems}
+                        onComplete={onComplete}
+                        onAdd={createItem.mutate}
+                    />
+                }
             </div>
         </main>
     )

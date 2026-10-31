@@ -7,17 +7,17 @@ import Tag from "@/components/Tag/Tag";
 
 import styles from "./styles.module.css";
 
-interface WorkItemCreationModalProps {
+interface WorkItemCreationFormProps {
     onSubmit: (workItem: WorkItem) => void,
     onClose: () => void,
     setError: (error: string | undefined) => void
 }
 
-export default function WorkItemCreationModal({
+export default function WorkItemCreationForm({
     onSubmit, 
     onClose,
     setError
-}: WorkItemCreationModalProps) {   
+}: WorkItemCreationFormProps) {   
     const [currentTag, setCurrentTag] = useState<string>("");
     const [tags, setTags] = useState<string[]>([]);
 

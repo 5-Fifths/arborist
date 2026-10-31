@@ -1,0 +1,21 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: var(--neutral);
+    padding: 5px;
+    border-radius: 50px;
+    height: 40px;
+
+    .slider {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: white;
+        border-radius: 30px;
+    }
+
+    .input {
+        display: none;
+    }
+}

@@ -17,8 +17,9 @@
     justify-content: space-between;
     font-family: var(--font-dm-mono);
     font-size: 1.05rem;
+    line-height: 27pt;
     letter-spacing: .5px;
-    padding: 20px;
+    padding: 15px;
     border-bottom: 1px solid var(--neutral);
 
     .addButton {
