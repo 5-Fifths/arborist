@@ -16,7 +16,7 @@ import SliderToggle from "@/components/SliderToggle/SliderToggle";
 import styles from "./styles.module.css";
 
 export default function TasksPage() {
-    const [activeView, setActiveView] = useState<"List" | "Calendar">("List");
+    const [activeView, setActiveView] = useState<"List" | "Calendar">("Calendar");
 
     const { userRefPath } = useUserRefPath();
     const {
@@ -57,7 +57,14 @@ export default function TasksPage() {
                 <p className={styles.date}>{formattedDate}</p>
                 <div className={styles.horizontal}>
                     <p className={styles.pageTitle}>Tasks</p>
-                    <SliderToggle />
+                    <SliderToggle
+                        options={{
+                            first: "Calendar",
+                            second: "List"
+                        }}
+                        value={activeView === 'Calendar'}
+                        setter={() => {setActiveView(prev => prev === "List" ? "Calendar" : "List")}}
+                    />
                 </div>
             </div>
             <div className={styles.mainContainer}>

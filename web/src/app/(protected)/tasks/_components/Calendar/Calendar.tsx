@@ -29,6 +29,8 @@ export default function Calendar({ mappedWorkItems, onSelectDate }: CalendarProp
                 {DAYS.map((day) => <h3 className={styles.gridHeader} key={day}>{day}</h3>)}
                 
                 {daysArray.map((day) => {
+                    console.log(day);
+
                     return (
                         <CalendarDay
                             key={day.dateString}

@@ -8,21 +8,19 @@ interface CalendarDate {
 
 // Creates an array for the month based on the date passed
 export function createDayArray(date: Date) {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+
     const daysInPreviousMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
     const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 
-    const dayArray: CalendarDate[] = [];
-
-    const temp = new Date(date);
-
-    temp.setMonth(date.getMonth() - 1);
+    const dayArray: CalendarDate[] = [];    
 
     // Fill with empty days
     for (let i = firstDay - 1; i >= 0; i--) {
         const day = daysInPreviousMonth - i;
-
-        temp.setDate(day);
+        const temp = new Date(year, month - 1, day);
 
         dayArray.push({
             date: day,
@@ -32,10 +30,8 @@ export function createDayArray(date: Date) {
     }
 
     // Fill days of the current month
-    temp.setMonth(date.getMonth());
-
     for (let i = 1; i <= daysInMonth; i++) {
-        temp.setDate(i);
+        const temp = new Date(year, month, i);
 
         dayArray.push({
             date: i,
@@ -48,11 +44,9 @@ export function createDayArray(date: Date) {
     const MIN_THRESHOLD = 35;
     
     // Fill the remainder of the 5th row with days from the next month
-    temp.setMonth(date.getMonth() + 1);
-
     if (dayArray.length < MIN_THRESHOLD) {
         for (let i = 1; i <= MIN_THRESHOLD - dayArray.length; i++) { 
-            temp.setDate(i);
+            const temp = new Date(year, month + 1, i);
 
             dayArray.push({
                 date: i,
