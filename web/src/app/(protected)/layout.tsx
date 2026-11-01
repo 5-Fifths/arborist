@@ -1,6 +1,6 @@
 'use client';
 
-import { useProtectedRoute } from "./_util/useProtectedRoute";
+import { useProtectedRoute } from "./_hooks/useProtectedRoute";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import Sidebar from "@/components/Sidebar/Sidebar";
 

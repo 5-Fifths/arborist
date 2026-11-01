@@ -40,12 +40,14 @@ export function createDayArray(date: Date) {
         })
     }
 
-    // If the array is longer than 35, then we need to account for a 6th row
-    const MIN_THRESHOLD = 35;
+    // If the array is longer than 35, then we need to account for a 6th row (42 cells)
+    const MIN_LENGTH = 35;
+    const MAX_LENGTH = 42;
+    const CURR_LENGTH = dayArray.length;
     
     // Fill the remainder of the 5th row with days from the next month
-    if (dayArray.length < MIN_THRESHOLD) {
-        for (let i = 1; i <= MIN_THRESHOLD - dayArray.length; i++) { 
+    if (dayArray.length <= MIN_LENGTH) {
+        for (let i = 1; i <= MIN_LENGTH - CURR_LENGTH; i++) { 
             const temp = new Date(year, month + 1, i);
 
             dayArray.push({
@@ -56,11 +58,9 @@ export function createDayArray(date: Date) {
         }
     }
     // Fill the remainder of the 6th row, if it exists
-    else if (dayArray.length > MIN_THRESHOLD) {
-        const MAX_LENGTH = 42;
-
+    else if (dayArray.length > MIN_LENGTH) {
         for (let i = 1; dayArray.length < MAX_LENGTH; i++) {
-            temp.setDate(i);
+            const temp = new Date(year, month + 1, i);
 
             dayArray.push({
                 date: i,

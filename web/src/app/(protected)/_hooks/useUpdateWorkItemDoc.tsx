@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { debounce } from "./debounce";
+import { debounce } from "../_util/debounce";
 import { updateWorkItemDoc } from "@/firebase/doc/updateWorkItemDoc";
 import { useUserRefPath } from "./useUserRefPath";
 import { WorkItem } from "@/types/WorkItem";
