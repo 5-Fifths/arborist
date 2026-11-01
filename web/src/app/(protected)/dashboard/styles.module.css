@@ -19,8 +19,45 @@
 
     .pageTitle {
         font-family: var(--font-noto-serif);
-        font-size: 2.5rem;
-        font-weight: 600;
+        font-size: 2.25rem;
+        font-weight: 500;
+    }
+
+    .horizontal {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .refreshButton {
+            padding: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border-radius: 1000px;
+            transition: background-color .1s;
+        }
+
+        .refreshButton:hover {
+            background-color: var(--neutral);
+        }
+    }
+
+    .refreshImage {
+        height: 17px;
+        width: 17px;
+    }
+
+    .animated {
+        animation: spin 2s linear infinite;
+    }
+
+    .headerText {
+        margin-top: -2px;
+        color: var(--accent);
+        font-family: var(--font-be-vietnam-pro);
+        font-size: 10pt;
     }
 
     .horizontal {

@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: white;
+    font-family: var(--font-dm-mono);
+    padding: 10px;
+    transition: background-color .2s;
+}
+
+.container:hover > .dateLine > .date {
+    background-color: var(--neutral);
+}
+
+.dateLine {
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+
+    .date {
+        padding: .25rem .275rem;
+        color: var(--accent);
+        border-radius: 1000px;
+        transition: background-color .1s
+    }
+
+    .selected {
+        background-color: var(--neutral);
+        color: accent;
+        border-radius: 1000px;
+        display: inline;
+    }
+
+    .current {
+        background-color: var(--accent);
+        color: white;
+        border-radius: 1000px;
+    }
+
+    .fadedDate {
+        color: var(--neutral);
+    }
+}
+
+.additional {
+    color: var(--neutral);
+    font-size: .8rem;
+}

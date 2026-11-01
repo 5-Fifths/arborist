@@ -1,0 +1,29 @@
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+    border: 1px solid var(--neutral);
+    padding: 5px;
+    border-radius: 50px;
+    height: 40px;
+
+    .input {
+        display: none;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px 10px;
+        color: var(--accent);
+    }
+
+    .active {
+        background-color: var(--accent);
+        color: white;
+        border-radius: 50px;
+    }
+}

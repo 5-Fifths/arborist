@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.mainContainer {
+    margin-left: 1px;
+    border-top: 1px solid var(--neutral);
+    display: flex;
+    flex: 1;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    .horizontal {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .date {
+        color: var(--accent);
+        font-family: var(--font-dm-mono);
+        font-size: .85rem;
+    }
+
+    .pageTitle {
+        font-family: var(--font-noto-serif);
+        font-size: 2.25rem;
+        font-weight: 500;
+    }
+}

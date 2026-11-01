@@ -1,18 +1,19 @@
 'use client';
 
-import { useState, useMemo } from "react";
-import { Task, Project, WorkItem } from "@/types/WorkItem";
+import { useState } from "react";
+import { WorkItem } from "@/types/WorkItem";
 import { useCreateWorkItemDoc } from "../_util/useCreateWorkItemDoc";
 import { useUpdateWorkItemDoc } from "../_util/useUpdateWorkItemDoc";
 import { useUserRefPath } from "../_util/useUserRefPath";
 import { useWorkItems } from "../_util/useWorkItems";
+import { useDate } from "../_util/useDate";
 import { useRefreshCache } from "../_util/useRefreshCache";
+import { useModal } from "../_hooks/useModal";
+import { formatDate } from "../_util/formatDate";
 
 import Modal from "@/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
 import ListContainer from "../_components/ListContainer/ListContainer";
-import TaskListItem from "../_components/WorkItems/TaskListItem/TaskListItem";
-import ProjectListItem from "../_components/WorkItems/ProjectListItem/ProjectListItem";
 import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
@@ -41,12 +42,16 @@ export default function Dashboard() {
         isCooldown 
     } = useRefreshCache();
 
+    const {
+        isOpen,
+        error,
+        setError,
+        open,
+        close,
+    } = useModal();
+
     const createItem = useCreateWorkItemDoc();
     const debouncedUpdate = useUpdateWorkItemDoc();
-
-    const [modalType, setModalType] = useState<"Task" | "Project" | "Urgent Task">();
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalError, setModalError] = useState<string | undefined>(undefined)
 
     // Handle completion of a work item
     const onComplete = (workItem: WorkItem) => {
@@ -59,17 +64,7 @@ export default function Dashboard() {
     }
 
     // Format date string
-    const date = useMemo(() => { 
-        return new Date(Date.now()).toLocaleDateString(
-            undefined, 
-            {
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            }
-        ).replace(/,/g, ' ּּּ· ');
-    }, []);
+    const { date, formattedDate } = useDate();
 
     // Prevent flash of content before user is initialized
     if (isRefLoading || isWorkItemsLoading) {
@@ -85,16 +80,22 @@ export default function Dashboard() {
         )
     }
 
+    const dailyTasks = tasks.filter(task => formatDate(task.due_date) === formatDate(date));
+
     return (
         <main className={styles.container}>
             <div className={styles.headerContainer}>
-                <p className={styles.date}>{date}</p>
-                <p className={styles.pageTitle}>Dashboard</p>
+                <p className={styles.date}>{formattedDate}</p>
+                <div className={styles.pageTitle}>Dashboard</div>
                 <div className={styles.horizontal}>
                     <ProgressBar
-                        percentageFilled={tasks.filter((task) => task.complete).length / tasks.length}  
+                        percentageFilled={
+                            dailyTasks.filter((task) => task.complete).length / dailyTasks.length
+                        }  
                     />
-                    <p className={styles.headerText}>{tasks.filter((task) => task.complete).length} of {tasks.length} complete</p>
+                    <p className={styles.headerText}>
+                        {dailyTasks.filter((task) => task.complete).length} of {dailyTasks.length} complete
+                    </p>
                     <button className={styles.refreshButton} onClick={() => refreshCache()}>
                         <img 
                             src={RefreshIcon.src}
@@ -107,50 +108,33 @@ export default function Dashboard() {
             <div className={styles.mainContainer}>
                 <ListContainer
                     title={"TODAY'S TASKS"}
-                    workItems={tasks}
-                    renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
-                    onAdd={() => {
-                        setModalOpen(true);
-                        setModalType("Task");
-                    }}
+                    workItems={tasks.filter((task) => formatDate(task.due_date) === formatDate(date))}
+                    onItemComplete={onComplete}
+                    onAdd={open}
                 />  
                 <ListContainer 
                     title={"URGENT TASKS"}
                     workItems={tasks.filter(task => task.tags?.includes("Urgent"))}
-                    renderItem={(task: Task) => <TaskListItem key={task.item_id} task={task} onComplete={onComplete} />}
-                    onAdd={() => {
-                        setModalOpen(true);
-                        setModalType("Urgent Task");
-                    }}
+                    onItemComplete={onComplete}
+                    onAdd={open}
                 />
                 <ListContainer 
                     title={"URGENT PROJECTS"}
-                    workItems={projects}
-                    renderItem={(project: Project) => <ProjectListItem key={project.item_id} project={project} onComplete={onComplete} />}
-                    onAdd={() => {
-                        setModalOpen(true);
-                        setModalType("Project");
-                    }}
+                    workItems={projects.filter((project) => project.tags?.includes("Urgent"))}
+                    onItemComplete={onComplete}
+                    onAdd={open}
                 />
 
-                {modalOpen && modalType ?
+                {isOpen ?
                     <Modal
-                        onClose={() => {
-                            setModalOpen(false);
-                            setModalType(undefined);
-                        }}  
-                        error={modalError}
+                        onClose={close}  
+                        error={error}
                     >
                         <WorkItemCreationForm
-                            setError={setModalError}
-                            type={modalType}
-                            onClose={() => {
-                                setModalOpen(false);
-                                setModalType(undefined);
-                            }}
+                            setError={setError}
+                            onClose={close}
                             onSubmit={(workItem) => {
-                                setModalOpen(false);
-                                setModalType(undefined);
+                                close();
                                 
                                 createItem.mutate(workItem);
                             }}

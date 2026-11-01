@@ -6,14 +6,32 @@
     > textarea {
         resize: none;
     }
-    
-    .input {
-        border: 1px solid var(--neutral);
-        padding: 10px;
-        font-family: var(--font-dm-mono);
-        font-size: .85rem;
-        color: #959A8F;
+
+    .inputGroup {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        
+        .label {
+            font-family: var(--font-dm-mono);
+            font-size: 10.5pt;
+            font-weight: 300;
+        }
+
+        .input {
+            border: 1px solid var(--neutral);
+            padding: 10px;
+            font-family: var(--font-dm-mono);
+            font-size: .85rem;
+            color: #959A8F;
+
+            .option {
+                font-family: var(--dm-mono);
+            }
+        }
     }
+    
+    
 
     .title {
         width: 225px;
@@ -31,7 +49,6 @@
 
     .tagContainer {
         min-height: 10px;
-        height: 100px;
         display: flex;
         gap: 10px;
         width: 100%;
@@ -49,31 +66,36 @@
 }
 
 .button {
-        border: 1px solid var(--neutral);
-        padding: 10px;
-        font-family: var(--font-dm-mono);
-        font-size: .85rem;
-        color: #959A8F;
-        transition: 
-            background-color .1s,
-            border-color .1s,
-            color .1s
-        ;
-    }
+    border: 1px solid var(--neutral);
+    max-height: 45px;
+    padding: 10px;
+    font-family: var(--font-dm-mono);
+    font-size: .85rem;
+    color: #959A8F;
+    transition: 
+        background-color .1s,
+        border-color .1s,
+        color .1s
+    ;
+}
 
-    .button:hover {
-        cursor: pointer;
-        border-color: white;
-        color: white;
-    }
+.button:hover {
+    cursor: pointer;
+    border-color: white;
+    color: white;
+}
 
-    .cancelButton:hover {
-        background-color: #959A8F;
-    }
+.cancelButton:hover {
+    background-color: #959A8F;
+}
 
-    .createButton:hover {
-        background-color: var(--accent);
-    }
+.createButton {
+    align-self: last baseline;
+}
+
+.createButton:hover {
+    background-color: var(--accent);
+}
 
 .header {
     font-family: var(--font-be-vietnam-pro);
