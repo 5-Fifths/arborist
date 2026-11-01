@@ -1,6 +1,6 @@
 import { db } from "../globals";
 import { getDoc, doc, DocumentReference } from "firebase/firestore";
-import { ApiResponse } from "../types/ApiResponse";
+import { ApiResponse } from "../../../types/ApiResponse";
 
 export async function getUserDocRef(userId: string): Promise<ApiResponse<DocumentReference>> {
     const userRef = doc(db, 'users', userId);

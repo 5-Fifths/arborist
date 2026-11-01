@@ -3,7 +3,7 @@
 import { FirebaseError } from "firebase/app";
 import { adminDb } from "@/lib/firebase-admin/globals";
 import { FieldValue } from "firebase-admin/firestore";
-import { ApiResponse } from "../types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export async function createUserDoc(uid: string): Promise<ApiResponse<FirebaseFirestore.DocumentReference>> {
     try {

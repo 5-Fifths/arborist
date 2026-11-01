@@ -2,7 +2,7 @@ import { FirebaseError } from "firebase/app";
 import { signOut } from "firebase/auth";
 
 import { auth } from "../globals";
-import { ApiResponse } from "../types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export async function signOutUser(): Promise<ApiResponse<string>> {
     try {
