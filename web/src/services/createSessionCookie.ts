@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { adminAuth } from "@/lib/firebase-admin/globals";
 import { FirebaseError } from "firebase-admin";
-import { parseExpectedError } from "@/firebase/parseExpectedError";
+import { parseExpectedError } from "@/lib/firebase/parseExpectedError";
 
 // Creates a server-side cookie
     // DO NOT RETURN THE COOKIE VALUE TO THE CLIENT. This cookie is httpOnly and cannot be accessed by the client.
