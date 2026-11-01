@@ -2,7 +2,7 @@ import { FirebaseError } from "firebase/app";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
 
 import { auth } from "../globals";
-import { ApiResponse } from "../types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export async function createUser(email: string, password: string): Promise<ApiResponse<User>> {
     try {
