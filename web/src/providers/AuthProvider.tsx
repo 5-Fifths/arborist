@@ -24,9 +24,13 @@ export function AuthProvider({
 
     useEffect(() => {
         // Add a listener for user state
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user);
             setLoading(false);
+
+            if (!user) {
+                await clearSessionCookie();
+            }
         })
 
         // Clean up listener

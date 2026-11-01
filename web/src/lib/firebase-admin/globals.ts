@@ -1,0 +1,21 @@
+import { initializeApp, cert, getApps } from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
+
+if (getApps().length < 1) {
+    try {
+        initializeApp({
+            credential: cert({
+                projectId: process.env.FIREBASE_PROJECT_ID,
+                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+                privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+            }),
+        });
+    }
+    catch (error) {
+        throw new Error("Failed to initialize Firebase Admin SDK: " + error);
+    }
+}
+
+export const adminAuth = getAuth();
+export const adminDb = getFirestore();

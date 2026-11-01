@@ -5,6 +5,8 @@ import { FormType } from "./FormType";
 import { parseExpectedError } from "@/lib/firebase/parseExpectedError";
 import { createUser } from "@/lib/firebase/auth/createUser";
 import { signInUser } from "@/lib/firebase/auth/signInUser";
+import { createUserDoc } from "@/lib/firebase-admin/doc/createUserDoc";
+import { createSessionCookie } from "@/services/createSessionCookie";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
 import ClosedEyeIcon from "@/assets/icons/ClosedEyeIcon.svg";
@@ -62,8 +64,20 @@ export function AuthForm({ formType }: AuthFormProps) {
                 throw new Error(parsedError);
             }
 
+            if (formType === FormType.Signup ) {
+                await createUserDoc(user.result.uid);
+            }
+
+            // Create a httpOnly session cookie for the user
+            const cookieResponse = await createSessionCookie(await user.result.getIdToken());
+
+            if (!cookieResponse.success) {
+                throw new Error(cookieResponse.result);
+            }
+
             setLoading(false);
 
+            router.refresh();
             router.push("/dashboard");
         }
         catch (err) {
