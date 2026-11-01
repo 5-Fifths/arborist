@@ -56,6 +56,7 @@ export function AuthForm({ formType }: AuthFormProps) {
                 signInUser :
                 createUser;
 
+            // Attempt to sign in or create a user with the provided email and password
             const user = await authAction(email, password);
          
             if (!user.success) {
@@ -64,6 +65,7 @@ export function AuthForm({ formType }: AuthFormProps) {
                 throw new Error(parsedError);
             }
 
+            // Create a user doc in Firestore if this is a signup
             if (formType === FormType.Signup ) {
                 await createUserDoc(user.result.uid);
             }
