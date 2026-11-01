@@ -11,12 +11,12 @@ import { useRefreshCache } from "../_hooks/useRefreshCache";
 import { useModal } from "../_hooks/useModal";
 import { formatDate } from "../_util/formatDate";
 
-import Modal from "@/components/Modal/Modal";
+import Modal from "@/assets/components/Modal/Modal";
 import WorkItemCreationForm from "../_components/WorkItemCreationForm/WorkItemCreationForm";
 import ListContainer from "../_components/ListContainer/ListContainer";
-import LoadingScreen from "@/components/LoadingScreen/LoadingScreen";
-import ErrorScreen from "@/components/ErrorScreen/ErrorScreen";
-import ProgressBar from "@/components/ProgressBar/ProgressBar";
+import LoadingScreen from "@/assets/components/LoadingScreen/LoadingScreen";
+import ErrorScreen from "@/assets/components/ErrorScreen/ErrorScreen";
+import ProgressBar from "@/assets/components/ProgressBar/ProgressBar";
 import RefreshIcon from "@/assets/icons/RefreshIcon.svg";
 
 import styles from "./styles.module.css";

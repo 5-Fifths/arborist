@@ -6,7 +6,7 @@ import { useDate } from "@/app/(protected)/_hooks/useDate";
 import { formatDate } from "@/app/(protected)/_util/formatDate";
 import { useModal } from "@/app/(protected)/_hooks/useModal";
 
-import Modal from "@/components/Modal/Modal";
+import Modal from "@/assets/components/Modal/Modal";
 import WorkItemCreationForm from "@/app/(protected)/_components/WorkItemCreationForm/WorkItemCreationForm";
 import ListContainer from "@/app/(protected)/_components/ListContainer/ListContainer";
 import Calendar from "../Calendar/Calendar";

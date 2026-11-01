@@ -1,8 +1,8 @@
 import { collection, getDocs } from "@firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 
-import { WorkItemConverter } from "@/firebase/dataConverters/WorkItemConverter";
-import { db } from "@/firebase/globals";
+import { WorkItemConverter } from "@/lib/firebase/dataConverters/WorkItemConverter";
+import { db } from "@/lib/firebase/globals";
 
 export function useWorkItems(userRefPath: string | undefined) {
     const {

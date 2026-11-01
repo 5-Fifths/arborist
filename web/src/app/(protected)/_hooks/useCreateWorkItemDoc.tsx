@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createWorkItemDoc } from "@/firebase/doc/createWorkItemDoc";
+import { createWorkItemDoc } from "@/lib/firebase/doc/createWorkItemDoc";
 import { useUserRefPath } from "./useUserRefPath";
 import { WorkItem } from "@/types/WorkItem";
 

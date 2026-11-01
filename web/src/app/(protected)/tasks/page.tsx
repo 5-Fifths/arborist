@@ -11,7 +11,7 @@ import { formatDate } from "../_util/formatDate";
 
 import CalendarView from "./_components/CalendarView/CalendarView";
 import ListView from "./_components/ListView/ListView";
-import SliderToggle from "@/components/SliderToggle/SliderToggle";
+import SliderToggle from "@/assets/components/SliderToggle/SliderToggle";
 
 import styles from "./styles.module.css";
 

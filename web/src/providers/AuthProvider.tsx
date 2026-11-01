@@ -7,7 +7,7 @@ import {
     useMemo
 } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/firebase/globals";
+import { auth } from "@/lib/firebase/globals";
 
 export const AuthContext = createContext({ 
     user: null as User | null,

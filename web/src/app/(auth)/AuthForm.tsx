@@ -2,13 +2,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormType } from "./FormType";
-import { parseExpectedError } from "@/firebase/parseExpectedError";
-import { createUser } from "@/firebase/auth/createUser";
-import { signInUser } from "@/firebase/auth/signInUser";
+import { parseExpectedError } from "@/lib/firebase/parseExpectedError";
+import { createUser } from "@/lib/firebase/auth/createUser";
+import { signInUser } from "@/lib/firebase/auth/signInUser";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
 import ClosedEyeIcon from "@/assets/icons/ClosedEyeIcon.svg";
-import ToggleButtonWithIcon from "@/components/ToggleButtonWithIcon/ToggleButtonWithIcon";
+import ToggleButtonWithIcon from "@/assets/components/ToggleButtonWithIcon/ToggleButtonWithIcon";
 import Link from "next/link";
 import styles from "./AuthForm.module.css";
 

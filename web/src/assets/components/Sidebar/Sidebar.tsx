@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
-import { signOutUser } from "@/firebase/auth/signOutUser";
+import { signOutUser } from "@/lib/firebase/auth/signOutUser";
 import LinkWithIcon from "../LinkWithIcon/LinkWithIcon";
 import ButtonImage from "../ButtonImage/ButtonImage";
 import Image from "next/image";

@@ -1,7 +1,7 @@
 import { WorkItem } from "@/types/WorkItem";
 import { useModal } from "@/app/(protected)/_hooks/useModal";
 
-import Modal from "@/components/Modal/Modal";
+import Modal from "@/assets/components/Modal/Modal";
 import WorkItemCreationForm from "@/app/(protected)/_components/WorkItemCreationForm/WorkItemCreationForm";
 import ListContainer from "@/app/(protected)/_components/ListContainer/ListContainer"
 

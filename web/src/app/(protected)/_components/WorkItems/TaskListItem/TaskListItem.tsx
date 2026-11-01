@@ -1,7 +1,7 @@
 'use client';
 
 import { type Task } from "@/types/WorkItem";
-import Tag from "@/components/Tag/Tag";
+import Tag from "@/assets/components/Tag/Tag";
 
 import styles from "../styles.module.css";
 
