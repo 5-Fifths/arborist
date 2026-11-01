@@ -3,8 +3,8 @@
 import { useContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import { signOutUser } from "@/lib/firebase/auth/signOutUser";
-import LinkWithIcon from "../LinkWithIcon/LinkWithIcon";
-import ButtonImage from "../ButtonImage/ButtonImage";
+import LinkWithIcon from "@/assets/components/LinkWithIcon/LinkWithIcon";
+import ButtonImage from "@/assets/components/ButtonImage/ButtonImage";
 import Image from "next/image";
 
 import Logo from "@/assets/icons/Logo.svg";
