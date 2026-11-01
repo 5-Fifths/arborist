@@ -1,24 +1,29 @@
-import { doc, setDoc, serverTimestamp, DocumentReference } from "firebase/firestore";
+'use server';
+
 import { FirebaseError } from "firebase/app";
-import { db } from "../globals";
+import { adminDb } from "@/lib/firebase-admin/globals";
+import { FieldValue } from "firebase-admin/firestore";
 import { ApiResponse } from "../types/ApiResponse";
 
-export async function createUserDoc(uid: string): Promise<ApiResponse<DocumentReference>> {
+export async function createUserDoc(uid: string): Promise<ApiResponse<FirebaseFirestore.DocumentReference>> {
     try {
         const initialData = {
-            creation_date: serverTimestamp(),
-            last_updated: serverTimestamp(),
+            creation_date: FieldValue.serverTimestamp(),
+            last_updated: FieldValue.serverTimestamp(),
             coins: 0
         }
 
-        await setDoc(
-            doc(db, "users", uid), 
-            initialData
-        )
+        const userRef = adminDb.collection("users").doc(uid);
+
+        const doc = await userRef.get();
+
+        if (!doc.exists) {
+            await userRef.set(initialData);
+        }
 
         return {
             success: true,
-            result: doc(db, "users", uid)
+            result: userRef
         };
     }
     catch (error) {

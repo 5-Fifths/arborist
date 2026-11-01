@@ -8,6 +8,7 @@ import {
 } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/firebase/globals";
+import { clearSessionCookie } from "@/services/clearSessionCookie";
 
 export const AuthContext = createContext({ 
     user: null as User | null,
@@ -24,9 +25,13 @@ export function AuthProvider({
 
     useEffect(() => {
         // Add a listener for user state
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user);
             setLoading(false);
+
+            if (!user) {
+                await clearSessionCookie();
+            }
         })
 
         // Clean up listener
