@@ -3,7 +3,8 @@
 import { adminAuth } from "@/lib/firebase-admin/globals";
 import { cookies } from "next/headers";
 
-export async function verifyUser(userId: string) {
+// Ensures that the session matches with the userId being passed
+export async function verifyUserSession(userId: string) {
     const cookieStore = await cookies();
     const cookie = cookieStore.get("firebaseSession");
 

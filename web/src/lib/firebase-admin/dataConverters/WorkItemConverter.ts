@@ -1,9 +1,5 @@
 import { WorkItem, TruncatedTask, ItemType } from "@/types/WorkItem";
-import { 
-    QueryDocumentSnapshot, 
-    SnapshotOptions,
-    Timestamp 
-} from "firebase/firestore";
+import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 interface WorkItemDbModel {
     // Identifying information
@@ -48,11 +44,8 @@ export const WorkItemConverter = {
         },
         
         // Cast as either a project or a task after
-        fromFirestore(
-            snapshot: QueryDocumentSnapshot, 
-            options: SnapshotOptions
-        ): WorkItem {
-            const data = snapshot.data(options) as WorkItemDbModel;
+        fromFirestore(snapshot: QueryDocumentSnapshot): WorkItem {
+            const data = snapshot.data() as WorkItemDbModel;
     
             const result: WorkItem = {
                 item_id: data.item_id,
