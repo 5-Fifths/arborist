@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { debounce } from "../_util/debounce";
 import { updateWorkItemDoc } from "@/lib/firebase/doc/updateWorkItemDoc";
 import { useUserRefPath } from "./useUserRefPath";
+import { isEqual } from "../_util/isEqual";
 import { WorkItem } from "@/types/WorkItem";
 
 interface WorkItemCache {
@@ -41,28 +42,21 @@ export function useUpdateWorkItemDoc() {
         }, 1000)
     );  
 
-    // Ensure that a change has actually occurred
-    function isEqual(newData: WorkItem, oldData: WorkItem | undefined) {
-        if (!oldData) return false;
-
-        const newKeys = Object.keys(newData);
-        const oldKeys = Object.keys(oldData);
-
-        if (newKeys.length !== oldKeys.length) return false;
-        
-        for (let i = 0; i < newKeys.length; i++) {
-            const key = newKeys[i];
-
-            if (!oldKeys.includes(key)) return false;
-
-            if (newData[key as keyof WorkItem] !== oldData[key as keyof WorkItem]) return false;
-        }
-
-        return true;
-    }
-
     // Optimistically updates the UI and upload to db
     function debouncedUpdate(newData: WorkItem) {
+        // Prevent network request from firing if the data didn't change
+        if (cacheRef.current) {
+            const targetArray = newData.item_type === "Project" ? cacheRef.current?.projects : cacheRef.current?.tasks;
+            const referencedItem = targetArray.find((item) => item.item_id === newData.item_id);
+
+            if (isEqual(newData, referencedItem)) {
+                // Cancel any timers the background if the user didn't make a real change
+                debouncedMutate.current.cancel();
+
+                return;
+            }
+        }
+
         // Update the cache
         queryClient.setQueryData<WorkItemCache>(['workItems', userRefPath], () => {
             // Update the cache ref
@@ -79,18 +73,6 @@ export function useUpdateWorkItemDoc() {
             }
         });
 
-        // Prevent network request from firing if the data didn't change
-        if (cacheRef.current) {
-            const targetArray = newData.item_type === "Project" ? cacheRef.current?.projects : cacheRef.current?.tasks;
-            const referencedItem = targetArray.find((item) => item.item_id === newData.item_id);
-
-            if (isEqual(newData, referencedItem)) {
-                // Cancel any timers the background if the user didn't make a real change
-                debouncedMutate.current.cancel();
-
-                return;
-            }
-        }
         // Send to db
         debouncedMutate.current(newData);
     }
