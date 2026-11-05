@@ -4,12 +4,13 @@ import { adminDb } from "@/lib/firebase-admin/globals";
 import { parseExpectedError } from "@/lib/firebase/parseExpectedError";
 import { FirebaseError } from "firebase-admin/app";
 import { FieldValue } from "firebase-admin/firestore";
-import { verifyUser } from "@/lib/firebase-admin/auth/verifyUser";
+import { verifyUserSession } from "@/lib/firebase-admin/auth/verifyUserSession";
 import { WorkItem } from "@/types/WorkItem";
+import { calculateItemValue } from "./calculateItemValue";
 
 export async function updateBalance(userId: string, workItem: WorkItem) {
     try {
-        await verifyUser(userId);
+        await verifyUserSession(userId);
 
         // Verify that the user account exists
         const userRef = adminDb.collection("users").doc(userId);
@@ -17,10 +18,10 @@ export async function updateBalance(userId: string, workItem: WorkItem) {
             throw new Error("User not found.");
         }
 
-        
+        const value = await calculateItemValue(userId, workItem);
 
         await userRef.update({
-            coins: FieldValue.increment() 
+            coins: FieldValue.increment(value)
         });
 
         return {

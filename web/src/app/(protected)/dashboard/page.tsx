@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { WorkItem } from "@/types/WorkItem";
 import { useCreateWorkItemDoc } from "../_hooks/useCreateWorkItemDoc";
-import { useUpdateWorkItemDoc } from "../_hooks/useUpdateWorkItemDoc";
+import { useMarkComplete } from "../_hooks/useMarkComplete";
 import { useUserRefPath } from "../_hooks/useUserRefPath";
 import { useWorkItems } from "../_hooks/useWorkItems";
 import { useDate } from "../_hooks/useDate";
@@ -51,17 +51,7 @@ export default function Dashboard() {
     } = useModal();
 
     const createItem = useCreateWorkItemDoc();
-    const debouncedUpdate = useUpdateWorkItemDoc();
-
-    // Handle completion of a work item
-    const onComplete = (workItem: WorkItem) => {
-        const updatedWorkItem: WorkItem = {
-            ...workItem,
-            complete: !workItem.complete
-        }
-
-        debouncedUpdate(updatedWorkItem);
-    }
+    const onComplete = useMarkComplete();
 
     // Format date string
     const { date, formattedDate } = useDate();

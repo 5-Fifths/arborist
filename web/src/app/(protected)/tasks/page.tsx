@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import { useUpdateWorkItemDoc } from "../_hooks/useUpdateWorkItemDoc";
 import { useCreateWorkItemDoc } from "../_hooks/useCreateWorkItemDoc";
 import { useWorkItems } from "../_hooks/useWorkItems";
 import { useUserRefPath } from "../_hooks/useUserRefPath";
 import { useDate } from "../_hooks/useDate";
-import { WorkItem } from "@/types/WorkItem";
 import { formatDate } from "../_util/formatDate";
 
 import CalendarView from "./_components/CalendarView/CalendarView";
@@ -14,6 +12,7 @@ import ListView from "./_components/ListView/ListView";
 import SliderToggle from "@/assets/components/SliderToggle/SliderToggle";
 
 import styles from "./styles.module.css";
+import { useMarkComplete } from "../_hooks/useMarkComplete";
 
 export default function TasksPage() {
     const [activeView, setActiveView] = useState<"List" | "Calendar">("Calendar");
@@ -28,17 +27,8 @@ export default function TasksPage() {
     } = useWorkItems(userRefPath);
     const { formattedDate } = useDate();
 
-    const debouncedUpdate = useUpdateWorkItemDoc();
     const createItem = useCreateWorkItemDoc();
-
-    const onComplete = (workItem: WorkItem) => {
-        const updatedWorkItem: WorkItem = {
-            ...workItem,
-            complete: !workItem.complete
-        }
-
-        debouncedUpdate(updatedWorkItem);
-    }
+    const onComplete = useMarkComplete();
 
     const mappedWorkItems = [
         ...(tasks.map((task) => ({
