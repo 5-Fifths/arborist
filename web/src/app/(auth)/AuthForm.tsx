@@ -6,7 +6,7 @@ import { parseExpectedError } from "@/lib/firebase/parseExpectedError";
 import { createUser } from "@/lib/firebase/auth/createUser";
 import { signInUser } from "@/lib/firebase/auth/signInUser";
 import { createUserDoc } from "@/lib/firebase-admin/doc/createUserDoc";
-import { createSessionCookie } from "@/services/createSessionCookie";
+import { createSessionCookie } from "@/services/session/createSessionCookie";
 
 import OpenEyeIcon from "@/assets/icons/OpenEyeIcon.svg";
 import ClosedEyeIcon from "@/assets/icons/ClosedEyeIcon.svg";

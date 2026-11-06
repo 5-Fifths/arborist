@@ -3,7 +3,7 @@
 import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/providers/AuthProvider';
-import { verifySessionCookie } from '@/services/verifySessionCookie';
+import { verifySessionCookie } from '@/services/session/verifySessionCookie';
 
 // Ensure that the user is logged in
 export function useProtectedRoute() {

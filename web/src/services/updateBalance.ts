@@ -6,7 +6,7 @@ import { FirebaseError } from "firebase-admin/app";
 import { FieldValue } from "firebase-admin/firestore";
 import { verifyUserSession } from "@/lib/firebase-admin/auth/verifyUserSession";
 import { WorkItem } from "@/types/WorkItem";
-import { calculateItemValue } from "./calculateItemValue";
+import { calculateItemValue } from "./coins/calculateItemValue";
 
 export async function updateBalance(userId: string, workItem: WorkItem) {
     try {
@@ -23,7 +23,7 @@ export async function updateBalance(userId: string, workItem: WorkItem) {
         await userRef.update({
             coins: FieldValue.increment(value)
         });
-
+        
         return {
             success: true,
             result: "Balance updated successfully."

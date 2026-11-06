@@ -3,6 +3,8 @@
 import { adminAuth } from "@/lib/firebase-admin/globals";
 import { cookies } from "next/headers";
 
+// Verify that the current session is valid
+    // Does not check to make sure that the session matches with the user
 export async function verifySessionCookie() {
     try {
         const cookieStore = await cookies();

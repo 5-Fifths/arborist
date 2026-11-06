@@ -8,7 +8,7 @@ import {
 } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase/globals";
-import { clearSessionCookie } from "@/services/clearSessionCookie";
+import { clearSessionCookie } from "@/services/session/clearSessionCookie";
 
 export const AuthContext = createContext({ 
     user: null as User | null,
